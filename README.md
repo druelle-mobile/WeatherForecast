@@ -68,7 +68,7 @@ The API key used is not included in the GIT repository.
 * [SSP](https://github.com/intuit/ssp) : to provide a new unit size, that easily scale with different screen's sizes (SSP for Scalable SP)
 * [Timber](https://github.com/JakeWharton/timber) : to easily get logs in application
 * [Stetho](https://github.com/facebook/stetho) : to debug application
-* [EasyPermissions](ex : https://github.com/googlesamples/easypermissions) : to easily manage permissions
+* [EasyPermissions](https://github.com/googlesamples/easypermissions) : to easily manage permissions
 
 
 ## Author

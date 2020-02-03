@@ -1,0 +1,40 @@
+// Definitions and versions of the application build basis
+
+// Define the apikey.properties file
+def api_key_properties_file = rootProject.file("apikey.properties")
+def api_key_properties = new Properties()
+api_key_properties.load(new FileInputStream(api_key_properties_file))
+
+// Define the version code of the app, based on the date
+def version_code = Integer.parseInt(new Date().format('yyMMddHHmm'))
+
+// Define the version name, with major, minor and patch versions
+// It depends of what you update
+def major_version = 1
+def minor_version = 0
+def patch_version = 0
+def version_name = "${major_version}.${minor_version}.${patch_version}"
+
+// Define the sdk build versions and the build tools
+def build_versions = [:]
+build_versions.compile_sdk = 29
+build_versions.min_sdk = 23
+build_versions.target_sdk = 29
+build_versions.build_tools = '29.0.2'
+
+// Define the gradle build version
+def gradle_build = '3.5.3'
+
+// Define the repositories used by the project
+static def addRepos(RepositoryHandler handler) {
+    handler.google()
+    handler.jcenter()
+}
+
+// List the external variables
+ext.api_key_properties = api_key_properties
+ext.version_code = version_code
+ext.version_name = version_name
+ext.build_versions = build_versions
+ext.gradle_build = "com.android.tools.build:gradle:$gradle_build"
+ext.addRepos = this.&addRepos

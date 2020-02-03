@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/genericFragment">
+
+    <fragment
+        android:id="@+id/genericFragment"
+        android:name="ovh.geoffrey_druelle.weatherforecast.ui.generic.GenericFragment"
+        android:label="GenericFragment"
+        tools:layout="@layout/generic_fragment">
+        <action
+            android:id="@+id/action_genericFragment_to_generic2Fragment"
+            app:destination="@id/generic2Fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/generic2Fragment"
+        android:name="ovh.geoffrey_druelle.weatherforecast.ui.generic2.Generic2Fragment"
+        android:label="Generic2Fragment"
+        tools:layout="@layout/generic2_fragment" />
+</navigation>

@@ -1,0 +1,115 @@
+apply plugin: 'com.android.application'
+
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion build_versions.compile_sdk
+    buildToolsVersion build_versions.build_tools
+    defaultConfig {
+        applicationId "ovh.geoffrey_druelle.weatherforecast"
+        minSdkVersion build_versions.min_sdk
+        targetSdkVersion build_versions.target_sdk
+        versionCode version_code
+        versionName version_name
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField("String", "OPENWEATHERMAP_APIKEY", api_key_properties["OPENWEATHERMAP_APIKEY"])
+    }
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            resValue "string", "app_name", "weatherapp"
+        }
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            applicationIdSuffix ".debug"
+            resValue "string", "app_name", "weatherapp DEV"
+        }
+    }
+    dataBinding {
+        enabled = true
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8
+    }
+    lintOptions {
+//        abortOnError false
+        disable 'GoogleAppIndexingWarning'
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    // Support
+    implementation deps.support.app_compat
+    implementation deps.support.core_ktx
+    implementation deps.support.preference
+    implementation deps.support.material
+    implementation deps.support.constraint
+    implementation deps.support.gson
+
+    // Kotlin
+    implementation deps.kotlin.stdlib
+    implementation deps.kotlin.coroutines_core
+    implementation deps.kotlin.coroutines_android
+
+    // Android Architecture Components
+    // Navigation
+    implementation deps.navigation.ui
+    implementation deps.navigation.fragment
+    // Room
+    implementation deps.room.runtime
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
+    kapt deps.room.compiler
+    implementation deps.room.ktx
+    implementation deps.room.rxjava2
+    // LiveData & ViewModel
+    implementation deps.lifecycle.extensions
+    implementation deps.lifecycle.viewmodel
+
+    // Retrofit
+    implementation deps.retrofit.runtime
+    implementation deps.retrofit.gson
+
+    // Koin
+    implementation deps.koin.core
+    implementation deps.koin.android
+    implementation deps.koin.viewmodel
+
+    // Rx
+    implementation deps.rx.rx_java2
+    implementation deps.rx.rx_android
+
+    // Stetho
+    implementation deps.stetho
+
+    // Picasso
+    implementation deps.picasso
+
+    // Timber
+    implementation deps.timber
+
+    // EasyPermissions
+    implementation deps.easy_permissions
+
+    // SDP & SSP
+    implementation deps.sdp
+    implementation deps.ssp
+
+    // Tests
+    testImplementation deps.koin.test
+    testImplementation deps.junit.junit
+    testImplementation deps.robolectric
+    androidTestImplementation deps.junit.xjunit
+    androidTestImplementation deps.espresso.core
+}

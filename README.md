@@ -1,6 +1,6 @@
 # Weather Forecast
 
-This Android application is my personal view of an exercise realized for **[Tabesto]**(https://www.tabesto.com/).
+This Android application is my personal view of an exercise realized for **[Tabesto](https://www.tabesto.com/)**.
 
 See the following statements.
 
@@ -29,9 +29,9 @@ Develop a native application containing at least the following elements :
 
 ## OpenWeatherMap API
 
-**[OpenWeather]**(https://openweather.co.uk/) is a small IT company that provides APIs to work with weather datas, satellite imagery and other environmental data.
+**[OpenWeather](https://openweather.co.uk/)** is a small IT company that provides APIs to work with weather datas, satellite imagery and other environmental data.
 
-In this project, I am using this API : **[5 day weather forecast]**(https://openweathermap.org/forecast5).
+In this project, I am using this API : **[5 day weather forecast](https://openweathermap.org/forecast5)**.
 
 The API key used is not included in the GIT repository.
 

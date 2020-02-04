@@ -49,14 +49,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/_8sdp"
-            android:text='@{String.format(@string/version,vm.appVersion)}'
+            android:text='@{String.format(@string/app_version,vm.appVersion)}'
             android:textSize="@dimen/_14ssp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            tools:text="@string/version" />
+            tools:text="@string/app_version" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

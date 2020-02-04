@@ -1,26 +1,25 @@
-package ovh.geoffrey_druelle.weatherforecast.ui.generic
+package ovh.geoffrey_druelle.weatherforecast.ui.forecast
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
-import androidx.lifecycle.Observer
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import ovh.geoffrey_druelle.weatherforecast.R
 import ovh.geoffrey_druelle.weatherforecast.core.BaseFragment
-import ovh.geoffrey_druelle.weatherforecast.databinding.GenericFragmentBinding
+import ovh.geoffrey_druelle.weatherforecast.databinding.ForecastListFragmentBinding
 
-class GenericFragment : BaseFragment<GenericFragmentBinding>() {
+class ForecastListFragment : BaseFragment<ForecastListFragmentBinding>() {
 
     companion object {
-        fun newInstance() = GenericFragment()
+        fun newInstance() = ForecastListFragment()
     }
 
-    private lateinit var viewModel: GenericViewModel
-
     @LayoutRes
-    override fun getLayoutResId(): Int = R.layout.generic_fragment
+    override fun getLayoutResId(): Int = R.layout.forecast_list_fragment
+
+    private lateinit var viewModel: ForecastListViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,18 +31,7 @@ class GenericFragment : BaseFragment<GenericFragmentBinding>() {
         binding.vm = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
-        initObservers()
-
         return root
     }
 
-    private fun initObservers() {
-        viewModel.isGeneric.observe(viewLifecycleOwner, Observer { boolean ->
-            if (boolean) switchGenericBooleanValue()
-        })
-    }
-
-    private fun switchGenericBooleanValue() {
-        viewModel.switchGenericBooleanValue()
-    }
 }

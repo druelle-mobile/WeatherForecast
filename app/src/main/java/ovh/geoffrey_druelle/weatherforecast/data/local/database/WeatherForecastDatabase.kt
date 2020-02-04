@@ -8,26 +8,48 @@ import androidx.room.TypeConverters
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import ovh.geoffrey_druelle.weatherforecast.data.local.converter.GenericConverter
-import ovh.geoffrey_druelle.weatherforecast.data.local.dao.GenericDao
-import ovh.geoffrey_druelle.weatherforecast.data.local.database.AppDatabase.Companion.databaseVersion
-import ovh.geoffrey_druelle.weatherforecast.data.local.model.GenericModel
+import ovh.geoffrey_druelle.weatherforecast.data.local.dao.*
+import ovh.geoffrey_druelle.weatherforecast.data.local.database.WeatherForecastDatabase.Companion.databaseVersion
+import ovh.geoffrey_druelle.weatherforecast.data.local.model.*
 import ovh.geoffrey_druelle.weatherforecast.utils.DB_NAME
 
 @Database(
-    entities = [GenericModel::class],
+    entities = [
+        ForecastEntity::class,
+        CityEntity::class,
+        CloudsEntity::class,
+        CoordEntity::class,
+        ListItemEntity::class,
+        MainEntity::class,
+        RainEntity::class,
+        SnowEntity::class,
+        SysEntity::class,
+        WeatherEntity::class,
+        WindEntity::class
+    ],
     version = databaseVersion,
     exportSchema = false
 )
 @TypeConverters(GenericConverter::class)
-abstract class AppDatabase : RoomDatabase() {
-    abstract fun genericDao(): GenericDao
+abstract class WeatherForecastDatabase : RoomDatabase() {
+    abstract fun cityDao(): CityDao
+    abstract fun cloudsDao(): CloudsDao
+    abstract fun coordDao(): CoordDao
+    abstract fun forecastDao(): ForecastDao
+    abstract fun listItemDao(): ListItemDao
+    abstract fun mainDao(): MainDao
+    abstract fun rainDao(): RainDao
+    abstract fun snowDao(): SnowDao
+    abstract fun sysDao(): SysDao
+    abstract fun weatherDao(): WeatherDao
+    abstract fun windDao(): WindDao
 
-    companion object {
+            companion object {
         @Volatile
-        private var instance: AppDatabase? = null
+        private var instance: WeatherForecastDatabase? = null
         const val databaseVersion = 1
 
-        fun getInstance(context: Context): AppDatabase =
+        fun getInstance(context: Context): WeatherForecastDatabase =
             instance ?: synchronized(this) {
                 instance ?: build(context).also {
                     instance = it
@@ -37,7 +59,7 @@ abstract class AppDatabase : RoomDatabase() {
         private fun build(context: Context) =
             Room.databaseBuilder(
                 context.applicationContext,
-                AppDatabase::class.java,
+                WeatherForecastDatabase::class.java,
                 DB_NAME
             )
                 .addMigrations(nToNPlusOneMigration)

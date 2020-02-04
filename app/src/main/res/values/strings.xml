@@ -1,7 +1,7 @@
 <resources>
     <string name="generic_text">Generic text</string>
     <string name="generic_number">1234</string>
-    <string name="version">Version %s</string>
+    <string name="app_version">Version %s</string>
 
     <string name="rationale_example">This app needs access to … to propose the best experience.</string>
     <string name="yes">Yes</string>

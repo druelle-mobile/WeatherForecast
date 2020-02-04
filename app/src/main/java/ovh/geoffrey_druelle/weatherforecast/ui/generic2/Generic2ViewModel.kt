@@ -8,7 +8,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import ovh.geoffrey_druelle.weatherforecast.WeatherForecastApplication.Companion.instance
 import ovh.geoffrey_druelle.weatherforecast.core.BaseViewModel
-import ovh.geoffrey_druelle.weatherforecast.data.local.model.GenericModel
 import ovh.geoffrey_druelle.weatherforecast.data.repository.GenericRepository
 import ovh.geoffrey_druelle.weatherforecast.utils.extension.with
 import timber.log.Timber.e

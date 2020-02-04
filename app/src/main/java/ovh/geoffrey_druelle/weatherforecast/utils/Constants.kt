@@ -10,5 +10,4 @@ const val WRITE_TIMEOUT = 15L
 const val READ_TIMEOUT = 15L
 // Base of the url of used API
 const val BASE_URL = "http://api.openweathermap.org/data/2.5/"
-// Dataset used for a request (subjective)
-const val FORECAST = "dataset"
+const val ICON_URL = "http://openweathermap.org/img/wn/"

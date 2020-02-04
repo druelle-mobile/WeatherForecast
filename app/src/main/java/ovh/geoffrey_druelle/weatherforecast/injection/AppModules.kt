@@ -7,10 +7,14 @@ import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.module.Module
 import org.koin.dsl.module
-import ovh.geoffrey_druelle.weatherforecast.data.local.database.AppDatabase
-import ovh.geoffrey_druelle.weatherforecast.data.remote.api.GenericApi
+import ovh.geoffrey_druelle.weatherforecast.BuildConfig.OPENWEATHERMAP_APIKEY
+import ovh.geoffrey_druelle.weatherforecast.data.local.database.WeatherForecastDatabase
+import ovh.geoffrey_druelle.weatherforecast.data.remote.api.OpenWeatherMapApi
 import ovh.geoffrey_druelle.weatherforecast.ui.generic.GenericViewModel
 import ovh.geoffrey_druelle.weatherforecast.ui.generic2.Generic2ViewModel
+import ovh.geoffrey_druelle.weatherforecast.ui.forecast.ForecastListViewModel
+import ovh.geoffrey_druelle.weatherforecast.ui.main.MainViewModel
+import ovh.geoffrey_druelle.weatherforecast.ui.splash.SplashScreenViewModel
 import ovh.geoffrey_druelle.weatherforecast.utils.BASE_URL
 import ovh.geoffrey_druelle.weatherforecast.utils.CONNECT_TIMEOUT
 import ovh.geoffrey_druelle.weatherforecast.utils.READ_TIMEOUT
@@ -21,8 +25,18 @@ import java.util.concurrent.TimeUnit
 
 val appModules = module {
     // Database modules part
-    single { AppDatabase.getInstance(androidApplication()) }
-    single { get<AppDatabase>().genericDao() }
+    single { WeatherForecastDatabase.getInstance(androidApplication()) }
+    single { get<WeatherForecastDatabase>().cityDao() }
+    single { get<WeatherForecastDatabase>().cloudsDao() }
+    single { get<WeatherForecastDatabase>().coordDao() }
+    single { get<WeatherForecastDatabase>().forecastDao() }
+    single { get<WeatherForecastDatabase>().listItemDao() }
+    single { get<WeatherForecastDatabase>().mainDao() }
+    single { get<WeatherForecastDatabase>().rainDao() }
+    single { get<WeatherForecastDatabase>().snowDao() }
+    single { get<WeatherForecastDatabase>().sysDao() }
+    single { get<WeatherForecastDatabase>().weatherDao() }
+    single { get<WeatherForecastDatabase>().windDao() }
 
     // Network modules part
     single { Cache(androidApplication().cacheDir, 20L * 1024 * 1024) }
@@ -31,6 +45,9 @@ val appModules = module {
     single { provideApiService(get()) }
 
     // ViewModels modules part
+    viewModel { MainViewModel() }
+    viewModel { SplashScreenViewModel(api = get()) }
+    viewModel { ForecastListViewModel() }
     viewModel { GenericViewModel() }
     viewModel { Generic2ViewModel() }
 }
@@ -54,12 +71,20 @@ fun provideOkHttpClient(cache: Cache): OkHttpClient {
 }
 
 fun apiInterceptor() = Interceptor { chain ->
-    chain.proceed(chain.request().newBuilder()
+    val url = chain.request().url().newBuilder()
+        .addQueryParameter("appid", OPENWEATHERMAP_APIKEY)
+        .build()
+    val request = chain.request().newBuilder()
         .apply {
             header("Accept", "application/json")
-            header("Content-Type","application/json; charset=utf-8")
+            header("Content-Type", "application/json; charset=utf-8")
         }
-        .build())
+        .url(url)
+        .build()
+
+    chain.proceed(
+        request
+    )
 }
 
 fun provideRetrofitClient(client: OkHttpClient): Retrofit {
@@ -70,5 +95,5 @@ fun provideRetrofitClient(client: OkHttpClient): Retrofit {
         .build()
 }
 
-fun provideApiService(retrofit: Retrofit): GenericApi
-        = retrofit.create(GenericApi::class.java)
+fun provideApiService(retrofit: Retrofit): OpenWeatherMapApi =
+    retrofit.create(OpenWeatherMapApi::class.java)

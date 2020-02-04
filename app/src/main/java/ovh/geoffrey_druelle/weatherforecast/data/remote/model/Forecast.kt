@@ -1,11 +1,11 @@
 package ovh.geoffrey_druelle.weatherforecast.data.remote.model
 
-import  com.google.gson.annotations.SerializedName
+import com.google.gson.annotations.SerializedName
 
-data class FiveDaysForecastAnswer(
+data class Forecast(
     @SerializedName("city") val city: City,
     @SerializedName("cnt") val cnt: Int,
     @SerializedName("cod") val cod: String,
-    @SerializedName("list") val list: List<X>,
+    @SerializedName("list") val list: List<ListItem>,
     @SerializedName("message") val message: Int
 )

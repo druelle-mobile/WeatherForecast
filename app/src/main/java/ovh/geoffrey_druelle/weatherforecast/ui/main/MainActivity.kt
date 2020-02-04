@@ -1,22 +1,78 @@
-package ovh.geoffrey_druelle.weatherforecast.ui
+package ovh.geoffrey_druelle.weatherforecast.ui.main
 
 import android.Manifest
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
+import androidx.navigation.findNavController
+import org.koin.androidx.viewmodel.ext.android.getViewModel
 import ovh.geoffrey_druelle.weatherforecast.R
+import ovh.geoffrey_druelle.weatherforecast.databinding.ActivityMainBinding
 import pub.devrel.easypermissions.AppSettingsDialog
-import pub.devrel.easypermissions.EasyPermissions
 import pub.devrel.easypermissions.EasyPermissions.*
-import timber.log.Timber
-import timber.log.Timber.*
+import timber.log.Timber.d
 
 class MainActivity : AppCompatActivity(),
     PermissionCallbacks,
     RationaleCallbacks {
 
-    // Example
+
+    companion object {
+        lateinit var instance: MainActivity
+    }
+
+    private lateinit var viewModel: MainViewModel
+    private lateinit var binding: ActivityMainBinding
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        instance = this
+
+        viewModel = getViewModel()
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        binding.vm = viewModel
+        binding.lifecycleOwner = this
+
+        initObservers()
+
+        setSupportActionBar(binding.toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(false)
+        setupToolbar()
+
+//        hasGenericPermission()
+    }
+
+    private fun setupToolbar() {
+        val navController = findNavController(R.id.nav_host_fragment)
+        navController.addOnDestinationChangedListener { controller, destination, arguments ->
+            when (destination.id) {
+                R.id.splashScreenFragment -> binding.toolbar.visibility = GONE
+                R.id.homeFragment -> {
+                    binding.toolbar.visibility = VISIBLE
+                }
+//                R.id.detailsFragment -> {
+//                    binding.toolbar.visibility = VISIBLE
+//                }
+//                R.id.aboutFragment -> {
+//                    binding.toolbar.visibility = VISIBLE
+//                }
+            }
+        }
+    }
+
+    private fun initObservers() {
+
+    }
+
+    /*
+    Init EasyPermissions checkin
+     */
     private val location = arrayOf(
         Manifest.permission.ACCESS_FINE_LOCATION,
         Manifest.permission.ACCESS_COARSE_LOCATION
@@ -24,22 +80,6 @@ class MainActivity : AppCompatActivity(),
 
     private val requestCodeGenericPerm = 111
 
-    companion object {
-        lateinit var instance: MainActivity
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
-        instance = this
-
-        hasGenericPermission()
-    }
-
-    /*
-    Init EasyPermissions checkin
-     */
     private fun hasGenericPermission(): Boolean {
         return if (!hasPermissions(instance, *location)) {
             requestPermissions(
@@ -62,7 +102,9 @@ class MainActivity : AppCompatActivity(),
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        onRequestPermissionsResult(requestCode, permissions, grantResults, instance)
+        onRequestPermissionsResult(requestCode, permissions, grantResults,
+            instance
+        )
     }
 
     override fun onPermissionsDenied(requestCode: Int, perms: MutableList<String>) {

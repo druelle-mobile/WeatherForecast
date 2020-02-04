@@ -2,7 +2,7 @@ package ovh.geoffrey_druelle.weatherforecast.data.remote.model
 
 import com.google.gson.annotations.SerializedName
 
-data class X(
+data class ListItem(
     @SerializedName("clouds") val clouds: Clouds,
     @SerializedName("dt") val dt: Int,
     @SerializedName("dt_txt") val dt_txt: String,

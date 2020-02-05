@@ -7,11 +7,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.runBlocking
 import ovh.geoffrey_druelle.weatherforecast.WeatherForecastApplication.Companion.appContext
-import ovh.geoffrey_druelle.weatherforecast.core.BaseViewModel
 import ovh.geoffrey_druelle.weatherforecast.WeatherForecastApplication.Companion.instance
+import ovh.geoffrey_druelle.weatherforecast.core.BaseViewModel
 import ovh.geoffrey_druelle.weatherforecast.data.remote.api.OpenWeatherMapApi
 import ovh.geoffrey_druelle.weatherforecast.data.remote.model.Forecast
-import ovh.geoffrey_druelle.weatherforecast.data.local.model.ListItemEntity
 import ovh.geoffrey_druelle.weatherforecast.data.repository.ForecastRepository
 import ovh.geoffrey_druelle.weatherforecast.utils.helper.ConnectivityHelper.isConnectedToNetwork
 import retrofit2.Call
@@ -33,6 +32,9 @@ class SplashScreenViewModel(private val api: OpenWeatherMapApi) : BaseViewModel(
     val isConnected: LiveData<Boolean>
         get() = _isConnected
 
+    private val _noDataNoConnection = MutableLiveData<Boolean>()
+    val noDataNoConnection: LiveData<Boolean>
+        get() = _noDataNoConnection
 
     private val _isConnectionNeeded = MutableLiveData<Boolean>()
     val isConnectionNeeded: LiveData<Boolean>
@@ -58,25 +60,24 @@ class SplashScreenViewModel(private val api: OpenWeatherMapApi) : BaseViewModel(
     }
 
     private fun testConnection() {
-        if (isConnectedToNetwork(appContext)) {
-            connected()
-            isLocalDatas()
-        } else notConnected()
+        if (isConnectedToNetwork(appContext)) _isConnected.postValue(true)
+        else _isConnected.postValue(false)
+        downloadDatas()
     }
 
-    internal fun isLocalDatas() {
+    private fun downloadDatas() {
         val count = runBlocking {
-//            repo.countEntries()
+            repo.countForecastEntries()
         }
-
-//        if (count != 0)
-//            connectionNeeded()
-//        else
-//            launchRequestForDatas()
+        when {
+            isConnected.value!! -> launchRequestForDatas()
+            count != 0 -> _navToHome.postValue(true)
+            else -> _noDataNoConnection.postValue(true)
+        }
     }
 
     internal fun launchRequestForDatas() {
-        val call: Call<Forecast> = api.getFullDatas("Paris","metric")
+        val call: Call<Forecast> = api.getFullDatas("Paris", "metric")
         call.enqueue(object : Callback<Forecast> {
             override fun onFailure(call: Call<Forecast>, t: Throwable) {
                 Timber.d(String.format("launchRequestForDatas : %s", t))
@@ -89,11 +90,8 @@ class SplashScreenViewModel(private val api: OpenWeatherMapApi) : BaseViewModel(
                 if (response.isSuccessful) {
                     succeedRequestForDatas()
                     val forecast: Forecast = response.body()!!
-                    val list: List<ListItemEntity> = forecast.list
-                    for (i in list.indices) {
-
-                    }
-                    navToHome()
+                    populateDatabase(forecast)
+                    _navToHome.postValue(true)
                 } else {
                     failedRequestForDatas()
                     Timber.d(String.format("launchRequestForDatas: got response but not successful"))
@@ -102,21 +100,15 @@ class SplashScreenViewModel(private val api: OpenWeatherMapApi) : BaseViewModel(
         })
     }
 
-    internal fun connected() {
-        _isConnected.postValue(true)
+    private fun populateDatabase(forecast: Forecast) {
+        runBlocking {
+            repo.insertForecast(forecast)
+            for (i in forecast.list.indices) {
+                repo.insertForecastListItems(forecast.list[i])
+            }
+        }
     }
 
-    internal fun notConnected() {
-        _isConnected.postValue(false)
-    }
-
-    internal fun connectionNeeded() {
-        _isConnectionNeeded.postValue(true)
-    }
-
-    internal fun connectionNotNeeded() {
-        _isConnectionNeeded.postValue(false)
-    }
 
     internal fun failedRequestForDatas() {
         _succeedRequestForDatas.postValue(false)
@@ -124,13 +116,5 @@ class SplashScreenViewModel(private val api: OpenWeatherMapApi) : BaseViewModel(
 
     internal fun succeedRequestForDatas() {
         _succeedRequestForDatas.postValue(true)
-    }
-
-    internal fun navToHome() {
-        _navToHome.postValue(true)
-    }
-
-    internal fun navigatedToHome() {
-        _navToHome.postValue(false)
     }
 }

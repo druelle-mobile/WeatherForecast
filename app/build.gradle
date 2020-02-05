@@ -25,7 +25,7 @@ android {
         debug {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            applicationIdSuffix ".debug"
+//            applicationIdSuffix ".debug"
             resValue "string", "app_name", "Weather App DEV"
         }
     }
@@ -84,6 +84,7 @@ dependencies {
     // Koin
     implementation deps.koin.core
     implementation deps.koin.android
+    implementation deps.koin.scope
     implementation deps.koin.viewmodel
 
     // Rx

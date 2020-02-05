@@ -26,7 +26,8 @@ versions.lifecycle = '2.2.0'
 // Retrofit
 versions.retrofit = '2.7.1'
 // Koin
-versions.koin = '2.1.0-alpha-10'
+//versions.koin = '2.1.0-alpha-10'
+versions.koin = '2.0.1'
 // Rx
 versions.rx_java2 = '2.2.17'
 versions.rx_android = '2.1.1'
@@ -91,6 +92,7 @@ retrofit.gson = "com.squareup.retrofit2:converter-gson:$versions.retrofit"
 def koin = [:]
 koin.core = "org.koin:koin-core:$versions.koin"
 koin.android = "org.koin:koin-android:$versions.koin"
+koin.scope = "org.koin:koin-androidx-scope:$versions.koin"
 koin.viewmodel = "org.koin:koin-androidx-viewmodel:$versions.koin"
 koin.test = "org.koin:koin-test:$versions.koin"
 // Rx

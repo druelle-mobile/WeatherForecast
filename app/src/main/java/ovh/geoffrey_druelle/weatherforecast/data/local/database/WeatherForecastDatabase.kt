@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
-import ovh.geoffrey_druelle.weatherforecast.data.local.converter.GenericConverter
+import ovh.geoffrey_druelle.weatherforecast.data.local.converter.*
 import ovh.geoffrey_druelle.weatherforecast.data.local.dao.*
 import ovh.geoffrey_druelle.weatherforecast.data.local.database.WeatherForecastDatabase.Companion.databaseVersion
 import ovh.geoffrey_druelle.weatherforecast.data.local.model.*
@@ -17,32 +17,17 @@ import ovh.geoffrey_druelle.weatherforecast.utils.DB_NAME
     entities = [
         ForecastEntity::class,
         CityEntity::class,
-        CloudsEntity::class,
-        CoordEntity::class,
         ListItemEntity::class,
-        MainEntity::class,
-        RainEntity::class,
-        SnowEntity::class,
-        SysEntity::class,
-        WeatherEntity::class,
-        WindEntity::class
+        WeatherEntity::class
     ],
     version = databaseVersion,
     exportSchema = false
 )
-@TypeConverters(GenericConverter::class)
 abstract class WeatherForecastDatabase : RoomDatabase() {
     abstract fun cityDao(): CityDao
-    abstract fun cloudsDao(): CloudsDao
-    abstract fun coordDao(): CoordDao
     abstract fun forecastDao(): ForecastDao
     abstract fun listItemDao(): ListItemDao
-    abstract fun mainDao(): MainDao
-    abstract fun rainDao(): RainDao
-    abstract fun snowDao(): SnowDao
-    abstract fun sysDao(): SysDao
     abstract fun weatherDao(): WeatherDao
-    abstract fun windDao(): WindDao
 
             companion object {
         @Volatile

@@ -7,4 +7,6 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="returned_from_settings">Returned from settings to the application with the following permissions : \\…: %s</string>
+    <string name="quit">Quit</string>
+    <string name="press_back">Press Back again to exit.</string>
 </resources>

@@ -10,8 +10,6 @@ import org.koin.dsl.module
 import ovh.geoffrey_druelle.weatherforecast.BuildConfig.OPENWEATHERMAP_APIKEY
 import ovh.geoffrey_druelle.weatherforecast.data.local.database.WeatherForecastDatabase
 import ovh.geoffrey_druelle.weatherforecast.data.remote.api.OpenWeatherMapApi
-import ovh.geoffrey_druelle.weatherforecast.ui.generic.GenericViewModel
-import ovh.geoffrey_druelle.weatherforecast.ui.generic2.Generic2ViewModel
 import ovh.geoffrey_druelle.weatherforecast.ui.forecast.ForecastListViewModel
 import ovh.geoffrey_druelle.weatherforecast.ui.main.MainViewModel
 import ovh.geoffrey_druelle.weatherforecast.ui.splash.SplashScreenViewModel
@@ -27,16 +25,9 @@ val appModules = module {
     // Database modules part
     single { WeatherForecastDatabase.getInstance(androidApplication()) }
     single { get<WeatherForecastDatabase>().cityDao() }
-    single { get<WeatherForecastDatabase>().cloudsDao() }
-    single { get<WeatherForecastDatabase>().coordDao() }
     single { get<WeatherForecastDatabase>().forecastDao() }
     single { get<WeatherForecastDatabase>().listItemDao() }
-    single { get<WeatherForecastDatabase>().mainDao() }
-    single { get<WeatherForecastDatabase>().rainDao() }
-    single { get<WeatherForecastDatabase>().snowDao() }
-    single { get<WeatherForecastDatabase>().sysDao() }
     single { get<WeatherForecastDatabase>().weatherDao() }
-    single { get<WeatherForecastDatabase>().windDao() }
 
     // Network modules part
     single { Cache(androidApplication().cacheDir, 20L * 1024 * 1024) }
@@ -48,8 +39,6 @@ val appModules = module {
     viewModel { MainViewModel() }
     viewModel { SplashScreenViewModel(api = get()) }
     viewModel { ForecastListViewModel() }
-    viewModel { GenericViewModel() }
-    viewModel { Generic2ViewModel() }
 }
 
 fun getModules(): List<Module> {

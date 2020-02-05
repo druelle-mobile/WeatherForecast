@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
 import org.koin.androidx.viewmodel.ext.android.getViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import ovh.geoffrey_druelle.weatherforecast.R
 import ovh.geoffrey_druelle.weatherforecast.databinding.ActivityMainBinding
 import pub.devrel.easypermissions.AppSettingsDialog
@@ -26,6 +27,7 @@ class MainActivity : AppCompatActivity(),
     }
 
     private lateinit var viewModel: MainViewModel
+//    val viewModel: MainViewModel by viewModel()
     private lateinit var binding: ActivityMainBinding
 
 
@@ -34,8 +36,8 @@ class MainActivity : AppCompatActivity(),
 
         instance = this
 
-        viewModel = getViewModel()
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        viewModel = getViewModel()
         binding.vm = viewModel
         binding.lifecycleOwner = this
 
@@ -50,7 +52,7 @@ class MainActivity : AppCompatActivity(),
 
     private fun setupToolbar() {
         val navController = findNavController(R.id.nav_host_fragment)
-        navController.addOnDestinationChangedListener { controller, destination, arguments ->
+        navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
                 R.id.splashScreenFragment -> binding.toolbar.visibility = GONE
                 R.id.homeFragment -> {

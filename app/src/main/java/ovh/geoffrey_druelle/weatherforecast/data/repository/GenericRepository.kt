@@ -28,19 +28,19 @@ class GenericRepository(application: Application) : CoroutineScope {
         }
     }
 
-    suspend fun insert(genericItem: GenericModel) {
-        withContext(Dispatchers.IO) {
-            cityDao.insert(genericItem)
-        }
-    }
-
-    suspend fun delete(genericItem: GenericModel) {
-        withContext(Dispatchers.IO) {
-            cityDao.delete(genericItem)
-        }
-    }
-
-    fun getGenericList() : Single<List<GenericModel>> {
-        return cityDao.getAll()
-    }
+//    suspend fun insert(genericItem: GenericModel) {
+//        withContext(Dispatchers.IO) {
+//            cityDao.insert(genericItem)
+//        }
+//    }
+//
+//    suspend fun delete(genericItem: GenericModel) {
+//        withContext(Dispatchers.IO) {
+//            cityDao.delete(genericItem)
+//        }
+//    }
+//
+//    fun getGenericList() : Single<List<GenericModel>> {
+//        return cityDao.getAll()
+//    }
 }

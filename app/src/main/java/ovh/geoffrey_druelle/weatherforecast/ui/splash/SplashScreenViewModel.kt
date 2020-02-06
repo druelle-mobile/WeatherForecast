@@ -1,5 +1,6 @@
 package ovh.geoffrey_druelle.weatherforecast.ui.splash
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.CoroutineScope
@@ -60,37 +61,52 @@ class SplashScreenViewModel(private val api: OpenWeatherMapApi) : BaseViewModel(
     }
 
     private fun testConnection() {
-        if (isConnectedToNetwork(appContext)) _isConnected.postValue(true)
-        else _isConnected.postValue(false)
-        downloadDatas()
+        var bool: Boolean
+        if (isConnectedToNetwork(appContext)) {
+            _isConnected.postValue(true)
+            bool = true
+        } else {
+            _isConnected.postValue(false)
+            bool = false
+        }
+
+        downloadDatas(bool)
     }
 
-    private fun downloadDatas() {
+    private fun downloadDatas(bool: Boolean) {
         val count = runBlocking {
             repo.countForecastEntries()
         }
+
         when {
-            isConnected.value!! -> launchRequestForDatas()
+            bool -> launchRequestForDatas()
             count != 0 -> _navToHome.postValue(true)
             else -> _noDataNoConnection.postValue(true)
         }
     }
 
-    internal fun launchRequestForDatas() {
+    private fun launchRequestForDatas() {
         val call: Call<Forecast> = api.getFullDatas("Paris", "metric")
+        Timber.i("Call : %s", call.toString())
         call.enqueue(object : Callback<Forecast> {
             override fun onFailure(call: Call<Forecast>, t: Throwable) {
-                Timber.d(String.format("launchRequestForDatas : %s", t))
+                Timber.d(String.format("launchRequestForDatas : Failure on call - %s", t))
+                Timber.d(String.format("launchRequestForDatas : Failure on call - %s", t.stackTrace))
+                Timber.d(String.format("launchRequestForDatas : Failure on call - %s", t.cause))
+                Timber.d(String.format("launchRequestForDatas : Failure on call - %s", t.message))
             }
 
             override fun onResponse(
                 call: Call<Forecast>,
                 response: Response<Forecast>
             ) {
+                Timber.i("Response : %s", response.message().toString())
+                Timber.i("Response : %s", response.body().toString())
                 if (response.isSuccessful) {
                     succeedRequestForDatas()
                     val forecast: Forecast = response.body()!!
                     populateDatabase(forecast)
+                    _noDataNoConnection.postValue(false)
                     _navToHome.postValue(true)
                 } else {
                     failedRequestForDatas()

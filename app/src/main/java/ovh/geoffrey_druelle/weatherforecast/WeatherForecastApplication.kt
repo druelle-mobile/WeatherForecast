@@ -9,7 +9,6 @@ import com.facebook.stetho.Stetho
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
-import org.koin.core.logger.Level
 import ovh.geoffrey_druelle.weatherforecast.injection.getModules
 import timber.log.Timber
 import timber.log.Timber.DebugTree

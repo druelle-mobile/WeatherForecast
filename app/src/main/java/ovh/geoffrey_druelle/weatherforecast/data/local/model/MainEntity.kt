@@ -12,7 +12,7 @@ data class MainEntity(
     var pressure: Int,
     var seaLevel: Int,
     var temp: Double,
-    var tempKf: Int,
+    var tempKf: Double,
     var tempMax: Double,
     var tempMin: Double
 ) {

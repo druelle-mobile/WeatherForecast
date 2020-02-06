@@ -1,7 +1,6 @@
 package ovh.geoffrey_druelle.weatherforecast.data.repository
 
 import android.app.Application
-import io.reactivex.Single
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

@@ -11,7 +11,6 @@ import ovh.geoffrey_druelle.weatherforecast.BuildConfig.OPENWEATHERMAP_APIKEY
 import ovh.geoffrey_druelle.weatherforecast.data.local.database.WeatherForecastDatabase
 import ovh.geoffrey_druelle.weatherforecast.data.remote.api.OpenWeatherMapApi
 import ovh.geoffrey_druelle.weatherforecast.ui.forecast.ForecastListViewModel
-import ovh.geoffrey_druelle.weatherforecast.ui.main.MainViewModel
 import ovh.geoffrey_druelle.weatherforecast.ui.splash.SplashScreenViewModel
 import ovh.geoffrey_druelle.weatherforecast.utils.BASE_URL
 import ovh.geoffrey_druelle.weatherforecast.utils.CONNECT_TIMEOUT
@@ -36,7 +35,6 @@ val appModules = module {
     single { provideApiService(get()) }
 
     // ViewModels modules part
-    viewModel { MainViewModel() }
     viewModel { SplashScreenViewModel(api = get()) }
     viewModel { ForecastListViewModel() }
 }
@@ -60,19 +58,19 @@ fun provideOkHttpClient(cache: Cache): OkHttpClient {
 }
 
 fun apiInterceptor() = Interceptor { chain ->
-    val url = chain.request().url().newBuilder()
-        .addQueryParameter("appid", OPENWEATHERMAP_APIKEY)
-        .build()
-    val request = chain.request().newBuilder()
-        .apply {
-            header("Accept", "application/json")
-            header("Content-Type", "application/json; charset=utf-8")
-        }
-        .url(url)
-        .build()
+//    val url =
+//    val request =
 
     chain.proceed(
-        request
+        chain.request().newBuilder()
+            .apply {
+                header("Accept", "application/json")
+                header("Content-Type", "application/json; charset=utf-8")
+            }
+            .url(chain.request().url().newBuilder()
+                .addQueryParameter("appid", OPENWEATHERMAP_APIKEY)
+                .build())
+            .build()
     )
 }
 

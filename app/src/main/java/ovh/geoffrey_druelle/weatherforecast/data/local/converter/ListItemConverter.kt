@@ -9,10 +9,10 @@ import java.lang.reflect.Type
 class ListItemConverter {
 
     @TypeConverter
-    fun listToString(list: List<ListItemEntity>): String = Gson().toJson(list)
+    fun listToString(list: List<ListItemEntity>?): String? = Gson().toJson(list)
 
     @TypeConverter
-    fun stringToList(string: String): List<ListItemEntity> {
+    fun stringToList(string: String?): List<ListItemEntity>? {
         val type: Type = object : TypeToken<List<ListItemEntity?>?>() {}.type
         return Gson().fromJson(string, type)
     }

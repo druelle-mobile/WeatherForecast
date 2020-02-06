@@ -15,15 +15,12 @@ import androidx.annotation.LayoutRes
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.navigation.fragment.NavHostFragment
 import com.google.android.material.snackbar.Snackbar
-import org.koin.android.ext.android.get
-import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.getViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import ovh.geoffrey_druelle.weatherforecast.R
 import ovh.geoffrey_druelle.weatherforecast.WeatherForecastApplication.Companion.appContext
 import ovh.geoffrey_druelle.weatherforecast.core.BaseFragment
 import ovh.geoffrey_druelle.weatherforecast.databinding.SplashScreenFragmentBinding
-import ovh.geoffrey_druelle.weatherforecast.ui.main.MainActivity
+import ovh.geoffrey_druelle.weatherforecast.ui.MainActivity
 import ovh.geoffrey_druelle.weatherforecast.utils.extension.obs
 
 class SplashScreenFragment : BaseFragment<SplashScreenFragmentBinding>() {
@@ -32,7 +29,7 @@ class SplashScreenFragment : BaseFragment<SplashScreenFragmentBinding>() {
         fun newInstance() = SplashScreenFragment()
     }
 
-    private lateinit var viewModel: SplashScreenViewModel
+    private lateinit var splashScreenViewModel: SplashScreenViewModel
 //    private var viewModel: SplashScreenViewModel = getViewModel()
 //    val viewModel: SplashScreenViewModel by viewModel()
 //    val viewModel: SplashScreenViewModel by inject()
@@ -47,8 +44,8 @@ class SplashScreenFragment : BaseFragment<SplashScreenFragmentBinding>() {
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
 
-        viewModel = getViewModel()
-        binding.vm = viewModel
+        splashScreenViewModel = getViewModel()
+        binding.vm = splashScreenViewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
 
@@ -62,13 +59,13 @@ class SplashScreenFragment : BaseFragment<SplashScreenFragmentBinding>() {
     }
 
     private fun initObservers() {
-        viewModel.navToHome.obs(this) { b ->
+        splashScreenViewModel.navToHome.obs(this) { b ->
             if (b) navigateToHome()
         }
-        viewModel.isConnected.obs(this) { b ->
+        splashScreenViewModel.isConnected.obs(this) { b ->
             if (!b) showNoConnectionSnackBar()
         }
-        viewModel.noDataNoConnection.obs(this) { b ->
+        splashScreenViewModel.noDataNoConnection.obs(this) { b ->
             if (b) showNoDataNoConnectionSnackbar()
         }
 //        viewModel.succeedRequestForDatas.obs(this) { b ->
@@ -95,7 +92,10 @@ class SplashScreenFragment : BaseFragment<SplashScreenFragmentBinding>() {
         view?.let {
             Snackbar.make(it, "Network error. Continue ?", Snackbar.LENGTH_SHORT)
                 .setAction(getString(R.string.yes)) { navigateToHome() }
-                .setAction(getString(R.string.quit)) { quitApp() }
+                .setAction(getString(R.string.quit)) {
+                    exit = true
+                    quitApp()
+                }
                 .show()
         }
     }
@@ -103,7 +103,10 @@ class SplashScreenFragment : BaseFragment<SplashScreenFragmentBinding>() {
     private fun showNoDataNoConnectionSnackbar() {
         view?.let {
             Snackbar.make(it, "No data and no internet.", Snackbar.LENGTH_INDEFINITE)
-                .setAction(getString(R.string.quit)) { quitApp() }
+                .setAction(getString(R.string.quit)) {
+                    exit = true
+                    quitApp()
+                }
                 .show()
         }
     }

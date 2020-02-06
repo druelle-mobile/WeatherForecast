@@ -7,8 +7,8 @@ data class ListItem(
     @SerializedName("dt") val dt: Int,
     @SerializedName("dt_txt") val dt_txt: String,
     @SerializedName("main") val main: Main,
-    @SerializedName("rain") val rain: Rain,
-    @SerializedName("snow") val snow: Snow,
+    @SerializedName("rain") val rain: Rain?,
+    @SerializedName("snow") val snow: Snow?,
     @SerializedName("sys") val sys: Sys,
     @SerializedName("weather") val weather: List<Weather>,
     @SerializedName("wind") val wind: Wind

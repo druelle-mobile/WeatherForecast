@@ -4,13 +4,17 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import androidx.room.TypeConverters
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
-import ovh.geoffrey_druelle.weatherforecast.data.local.converter.*
-import ovh.geoffrey_druelle.weatherforecast.data.local.dao.*
+import ovh.geoffrey_druelle.weatherforecast.data.local.dao.CityDao
+import ovh.geoffrey_druelle.weatherforecast.data.local.dao.ForecastDao
+import ovh.geoffrey_druelle.weatherforecast.data.local.dao.ListItemDao
+import ovh.geoffrey_druelle.weatherforecast.data.local.dao.WeatherDao
 import ovh.geoffrey_druelle.weatherforecast.data.local.database.WeatherForecastDatabase.Companion.databaseVersion
-import ovh.geoffrey_druelle.weatherforecast.data.local.model.*
+import ovh.geoffrey_druelle.weatherforecast.data.local.model.CityEntity
+import ovh.geoffrey_druelle.weatherforecast.data.local.model.ForecastEntity
+import ovh.geoffrey_druelle.weatherforecast.data.local.model.ListItemEntity
+import ovh.geoffrey_druelle.weatherforecast.data.local.model.WeatherEntity
 import ovh.geoffrey_druelle.weatherforecast.utils.DB_NAME
 
 @Database(

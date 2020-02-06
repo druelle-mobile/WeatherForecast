@@ -24,7 +24,7 @@ class ForecastListAdapter(
 
     private var job: Job = Job()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ForecastListAdapter.HomeViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeViewHolder {
         return HomeViewHolder(
             LayoutInflater.from(parent.context).inflate(
                 R.layout.forecast_list_item,
@@ -36,7 +36,7 @@ class ForecastListAdapter(
 
     override fun getItemCount(): Int = forecastList.size
 
-    override fun onBindViewHolder(holder: ForecastListAdapter.HomeViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: HomeViewHolder, position: Int) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 

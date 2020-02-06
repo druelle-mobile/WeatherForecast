@@ -51,8 +51,8 @@ data class ListItemEntity(
         dt = listItem.dt,
         dt_txt = listItem.dt_txt,
         main = MainEntity(listItem.main),
-        rain = RainEntity(listItem.rain),
-        snow = SnowEntity(listItem.snow),
+        rain = listItem.rain?.let { RainEntity(it) },
+        snow = listItem.snow?.let { SnowEntity(it) },
         sys = SysEntity(listItem.sys),
         weather = WeatherEntity(listItem.weather[0]),
         wind = WindEntity(listItem.wind)

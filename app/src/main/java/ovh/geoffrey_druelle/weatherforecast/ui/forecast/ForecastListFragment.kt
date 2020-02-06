@@ -9,6 +9,8 @@ import org.koin.androidx.viewmodel.ext.android.getViewModel
 import ovh.geoffrey_druelle.weatherforecast.R
 import ovh.geoffrey_druelle.weatherforecast.core.BaseFragment
 import ovh.geoffrey_druelle.weatherforecast.databinding.ForecastListFragmentBinding
+import ovh.geoffrey_druelle.weatherforecast.ui.main.MainActivity
+import ovh.geoffrey_druelle.weatherforecast.utils.extension.obs
 
 class ForecastListFragment : BaseFragment<ForecastListFragmentBinding>() {
 
@@ -30,6 +32,9 @@ class ForecastListFragment : BaseFragment<ForecastListFragmentBinding>() {
         viewModel = getViewModel()
         binding.vm = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
+
+//        val title = String.format("%s, %s", viewModel.city.value?.name, viewModel.city.value?.country)
+//        (activity as MainActivity).viewModel.appBarTitle.set(title)
 
         return root
     }

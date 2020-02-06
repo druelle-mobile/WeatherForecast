@@ -8,17 +8,21 @@ import ovh.geoffrey_druelle.weatherforecast.ui.forecast.ForecastListViewModel
 @BindingAdapter(value = ["forecastList","forecastListViewModel"], requireAll = false)
 fun setRecyclerViewSource(
     recyclerView: RecyclerView,
-    list: List<ForecastEntity>,
+    list: List<ForecastEntity>?,
     viewModel: ForecastListViewModel
 ) {
     recyclerView.adapter?.run {
         if (this is ForecastListAdapter) {
-            this.forecastList = list
+            if (list != null) {
+                this.forecastList = list
+            }
             this.notifyDataSetChanged()
         }
     } ?: run {
-        ForecastListAdapter(list, viewModel).apply {
-            recyclerView.adapter = this
+        list?.let {
+            ForecastListAdapter(it, viewModel).apply {
+                recyclerView.adapter = this
+            }
         }
     }
 }

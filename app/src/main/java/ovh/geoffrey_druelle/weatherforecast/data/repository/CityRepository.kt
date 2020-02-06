@@ -5,41 +5,36 @@ import androidx.lifecycle.LiveData
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import ovh.geoffrey_druelle.weatherforecast.data.local.dao.ForecastDao
+import ovh.geoffrey_druelle.weatherforecast.data.local.dao.CityDao
 import ovh.geoffrey_druelle.weatherforecast.data.local.database.WeatherForecastDatabase
-import ovh.geoffrey_druelle.weatherforecast.data.local.model.ForecastEntity
+import ovh.geoffrey_druelle.weatherforecast.data.local.model.CityEntity
 import kotlin.coroutines.CoroutineContext
 
-class ForecastRepository(app: Application) : CoroutineScope {
+class CityRepository(app: Application) : CoroutineScope {
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main
 
-    private var forecastDao: ForecastDao
+    private var cityDao: CityDao
 
     init {
         val db = WeatherForecastDatabase.getInstance(app)
-        forecastDao = db.forecastDao()
-    }
-
-    suspend fun countForecastEntries(): Int {
-        return withContext(Dispatchers.IO) {
-            forecastDao.countEntries()
-        }
+        cityDao = db.cityDao()
     }
 
     suspend fun deleteAll() {
         withContext(Dispatchers.IO) {
-            forecastDao.deleteAll()
+            cityDao.deleteAll()
         }
     }
 
-    suspend fun insert(forecastObject: ForecastEntity) {
+    suspend fun insert(city: CityEntity) {
         withContext(Dispatchers.IO) {
-            forecastDao.insert(forecastObject)
+            cityDao.insert(city)
         }
     }
 
-    fun getForecastList(): LiveData<List<ForecastEntity>> {
-        return forecastDao.getAll()
+    fun getCity(id: Int): LiveData<CityEntity> {
+        return cityDao.getCityFromId(id)
+
     }
 }

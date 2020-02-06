@@ -20,7 +20,7 @@ import ovh.geoffrey_druelle.weatherforecast.R
 import ovh.geoffrey_druelle.weatherforecast.WeatherForecastApplication.Companion.appContext
 import ovh.geoffrey_druelle.weatherforecast.core.BaseFragment
 import ovh.geoffrey_druelle.weatherforecast.databinding.SplashScreenFragmentBinding
-import ovh.geoffrey_druelle.weatherforecast.ui.MainActivity
+import ovh.geoffrey_druelle.weatherforecast.ui.main.MainActivity
 import ovh.geoffrey_druelle.weatherforecast.utils.extension.obs
 
 class SplashScreenFragment : BaseFragment<SplashScreenFragmentBinding>() {
@@ -29,7 +29,7 @@ class SplashScreenFragment : BaseFragment<SplashScreenFragmentBinding>() {
         fun newInstance() = SplashScreenFragment()
     }
 
-    private lateinit var splashScreenViewModel: SplashScreenViewModel
+    private lateinit var viewModel: SplashScreenViewModel
 //    private var viewModel: SplashScreenViewModel = getViewModel()
 //    val viewModel: SplashScreenViewModel by viewModel()
 //    val viewModel: SplashScreenViewModel by inject()
@@ -44,8 +44,8 @@ class SplashScreenFragment : BaseFragment<SplashScreenFragmentBinding>() {
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
 
-        splashScreenViewModel = getViewModel()
-        binding.vm = splashScreenViewModel
+        viewModel = getViewModel()
+        binding.vm = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
 
@@ -59,13 +59,13 @@ class SplashScreenFragment : BaseFragment<SplashScreenFragmentBinding>() {
     }
 
     private fun initObservers() {
-        splashScreenViewModel.navToHome.obs(this) { b ->
+        viewModel.navToHome.obs(this) { b ->
             if (b) navigateToHome()
         }
-        splashScreenViewModel.isConnected.obs(this) { b ->
+        viewModel.isConnected.obs(this) { b ->
             if (!b) showNoConnectionSnackBar()
         }
-        splashScreenViewModel.noDataNoConnection.obs(this) { b ->
+        viewModel.noDataNoConnection.obs(this) { b ->
             if (b) showNoDataNoConnectionSnackbar()
         }
 //        viewModel.succeedRequestForDatas.obs(this) { b ->

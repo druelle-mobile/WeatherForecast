@@ -1,6 +1,5 @@
 package ovh.geoffrey_druelle.weatherforecast.ui.splash
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.CoroutineScope
@@ -10,8 +9,12 @@ import kotlinx.coroutines.runBlocking
 import ovh.geoffrey_druelle.weatherforecast.WeatherForecastApplication.Companion.appContext
 import ovh.geoffrey_druelle.weatherforecast.WeatherForecastApplication.Companion.instance
 import ovh.geoffrey_druelle.weatherforecast.core.BaseViewModel
+import ovh.geoffrey_druelle.weatherforecast.data.local.model.CityEntity
+import ovh.geoffrey_druelle.weatherforecast.data.local.model.ForecastEntity
 import ovh.geoffrey_druelle.weatherforecast.data.remote.api.OpenWeatherMapApi
 import ovh.geoffrey_druelle.weatherforecast.data.remote.model.Forecast
+import ovh.geoffrey_druelle.weatherforecast.data.remote.model.ListItem
+import ovh.geoffrey_druelle.weatherforecast.data.repository.CityRepository
 import ovh.geoffrey_druelle.weatherforecast.data.repository.ForecastRepository
 import ovh.geoffrey_druelle.weatherforecast.utils.helper.ConnectivityHelper.isConnectedToNetwork
 import retrofit2.Call
@@ -27,7 +30,8 @@ class SplashScreenViewModel(private val api: OpenWeatherMapApi) : BaseViewModel(
 
     private var job: Job = Job()
 
-    private var repo = ForecastRepository(instance)
+    private var forecastRepository = ForecastRepository(instance)
+    private var cityRepository = CityRepository(instance)
 
     private val _isConnected = MutableLiveData<Boolean>()
     val isConnected: LiveData<Boolean>
@@ -75,7 +79,7 @@ class SplashScreenViewModel(private val api: OpenWeatherMapApi) : BaseViewModel(
 
     private fun downloadDatas(bool: Boolean) {
         val count = runBlocking {
-            repo.countForecastEntries()
+            forecastRepository.countForecastEntries()
         }
 
         when {
@@ -91,7 +95,12 @@ class SplashScreenViewModel(private val api: OpenWeatherMapApi) : BaseViewModel(
         call.enqueue(object : Callback<Forecast> {
             override fun onFailure(call: Call<Forecast>, t: Throwable) {
                 Timber.d(String.format("launchRequestForDatas : Failure on call - %s", t))
-                Timber.d(String.format("launchRequestForDatas : Failure on call - %s", t.stackTrace))
+                Timber.d(
+                    String.format(
+                        "launchRequestForDatas : Failure on call - %s",
+                        t.stackTrace
+                    )
+                )
                 Timber.d(String.format("launchRequestForDatas : Failure on call - %s", t.cause))
                 Timber.d(String.format("launchRequestForDatas : Failure on call - %s", t.message))
             }
@@ -105,6 +114,7 @@ class SplashScreenViewModel(private val api: OpenWeatherMapApi) : BaseViewModel(
                 if (response.isSuccessful) {
                     succeedRequestForDatas()
                     val forecast: Forecast = response.body()!!
+                    cleanDatabase()
                     populateDatabase(forecast)
                     _noDataNoConnection.postValue(false)
                     _navToHome.postValue(true)
@@ -116,13 +126,65 @@ class SplashScreenViewModel(private val api: OpenWeatherMapApi) : BaseViewModel(
         })
     }
 
-    private fun populateDatabase(forecast: Forecast) {
+    private fun cleanDatabase() {
         runBlocking {
-            repo.insertForecast(forecast)
+            forecastRepository.deleteAll()
+            cityRepository.deleteAll()
+        }
+    }
+
+    private fun populateDatabase(forecast: Forecast) {
+
+
+        runBlocking {
+            cityRepository.insert(createCityObject(forecast))
             for (i in forecast.list.indices) {
-                repo.insertForecastListItems(forecast.list[i])
+                forecastRepository.insert(createForecastObject(forecast.city.id, forecast.list[i]))
             }
         }
+    }
+
+    private fun createCityObject(forecast: Forecast): CityEntity {
+        val city = CityEntity()
+        city.id = forecast.city.id
+        city.name = forecast.city.name
+        city.country = forecast.city.country
+        city.lat = forecast.city.coord.lat
+        city.lon = forecast.city.coord.lon
+        city.sunrise = forecast.city.sunrise
+        city.sunset = forecast.city.sunset
+        city.timezone = forecast.city.timezone
+
+        return city
+    }
+
+    private fun createForecastObject(
+        cityId: Int,
+        listItem: ListItem
+    ): ForecastEntity {
+        val item = ForecastEntity()
+        item.cityId = cityId
+        item.dt = listItem.dt
+        item.dt_txt = listItem.dt_txt
+        item.cloudsAll = listItem.clouds.all
+        item.feelsLike = listItem.main.feels_like
+        item.grndLevel = listItem.main.grnd_level
+        item.humidity = listItem.main.humidity
+        item.pressure = listItem.main.pressure
+        item.seaLevel = listItem.main.sea_level
+        item.temp = listItem.main.temp
+        item.tempKf = listItem.main.temp_kf
+        item.tempMax = listItem.main.temp_max
+        item.tempMin = listItem.main.temp_min
+        item.volumeRainLastThreeHours = listItem.rain?.volumeRainLastThreeHours
+        item.volumeSnowLastThreeHours = listItem.snow?.volumeSnowLastThreeHours
+        item.pod = listItem.sys.pod
+        item.weatherId = listItem.weather[0].id
+        item.weatherIcon = listItem.weather[0].icon
+        item.degWind = listItem.wind.deg
+        item.speedWind = listItem.wind.speed
+
+        return item
     }
 
 

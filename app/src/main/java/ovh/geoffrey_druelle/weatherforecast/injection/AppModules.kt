@@ -11,6 +11,7 @@ import ovh.geoffrey_druelle.weatherforecast.BuildConfig.OPENWEATHERMAP_APIKEY
 import ovh.geoffrey_druelle.weatherforecast.data.local.database.WeatherForecastDatabase
 import ovh.geoffrey_druelle.weatherforecast.data.remote.api.OpenWeatherMapApi
 import ovh.geoffrey_druelle.weatherforecast.ui.forecast.ForecastListViewModel
+import ovh.geoffrey_druelle.weatherforecast.ui.main.MainActivityViewModel
 import ovh.geoffrey_druelle.weatherforecast.ui.splash.SplashScreenViewModel
 import ovh.geoffrey_druelle.weatherforecast.utils.BASE_URL
 import ovh.geoffrey_druelle.weatherforecast.utils.CONNECT_TIMEOUT
@@ -25,8 +26,6 @@ val appModules = module {
     single { WeatherForecastDatabase.getInstance(androidApplication()) }
     single { get<WeatherForecastDatabase>().cityDao() }
     single { get<WeatherForecastDatabase>().forecastDao() }
-    single { get<WeatherForecastDatabase>().listItemDao() }
-    single { get<WeatherForecastDatabase>().weatherDao() }
 
     // Network modules part
     single { Cache(androidApplication().cacheDir, 20L * 1024 * 1024) }
@@ -35,6 +34,7 @@ val appModules = module {
     single { provideApiService(get()) }
 
     // ViewModels modules part
+    viewModel { MainActivityViewModel() }
     viewModel { SplashScreenViewModel(api = get()) }
     viewModel { ForecastListViewModel() }
 }

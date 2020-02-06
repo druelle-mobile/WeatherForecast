@@ -1,37 +1,43 @@
-package ovh.geoffrey_druelle.weatherforecast.ui
+package ovh.geoffrey_druelle.weatherforecast.ui.main
 
 import android.Manifest
 import android.content.Intent
 import android.os.Bundle
-import android.view.View.GONE
-import android.view.View.VISIBLE
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.navigation.findNavController
+import org.koin.androidx.viewmodel.ext.android.getViewModel
 import ovh.geoffrey_druelle.weatherforecast.R
+import ovh.geoffrey_druelle.weatherforecast.core.BaseActivity
+import ovh.geoffrey_druelle.weatherforecast.databinding.ActivityMainBinding
+import ovh.geoffrey_druelle.weatherforecast.utils.extension.hide
+import ovh.geoffrey_druelle.weatherforecast.utils.extension.show
 import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions.*
 import timber.log.Timber.d
 
-class MainActivity : AppCompatActivity(),
+class MainActivity : BaseActivity<ActivityMainBinding>(),
     PermissionCallbacks,
     RationaleCallbacks {
 
-    private lateinit var toolbar: Toolbar
 
     companion object {
         lateinit var instance: MainActivity
     }
 
+    override fun getLayoutResId(): Int = R.layout.activity_main
+
+    lateinit var viewModel: MainActivityViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
 
         instance = this
 
-        toolbar = findViewById(R.id.toolbar)
-        setSupportActionBar(toolbar)
+        viewModel = getViewModel()
+        binding.vm = viewModel
+        binding.lifecycleOwner = this
+
+        setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(false)
         setupToolbar()
 
@@ -42,9 +48,9 @@ class MainActivity : AppCompatActivity(),
         val navController = findNavController(R.id.nav_host_fragment)
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.splashScreenFragment -> toolbar.visibility = GONE
+                R.id.splashScreenFragment -> binding.toolbar.hide()
                 R.id.homeFragment -> {
-                    toolbar.visibility = VISIBLE
+                    binding.toolbar.show()
                 }
 //                R.id.detailsFragment -> {
 //                    binding.toolbar.visibility = VISIBLE

@@ -48,13 +48,16 @@ The API key used is not included in the GIT repository.
 
 ### Architecture and Dependencies
 
-* Kotlin
+* Kotlin - [1.3.61](https://github.com/JetBrains/kotlin/releases/tag/v1.3.61)
+* Gradle build - 3.5.3
 * MVVM Pattern
-* DataBinding
-* Android Arch Components
-    * Navigation
-    * Lifecycle - LiveData & ViewModel
-    * Room
+* Android Architecture Components from [Jetpack](https://developer.android.com/jetpack)
+    * [Navigation](https://developer.android.com/guide/navigation/)
+    * [Lifecycle](https://developer.android.com/topic/libraries/architecture/lifecycle)
+    * [LiveData](https://developer.android.com/topic/libraries/architecture/livedata)
+    * [ViewModel](https://developer.android.com/topic/libraries/architecture/viewmodel)
+    * [Room](https://developer.android.com/topic/libraries/architecture/room)
+    * [DataBinding](https://developer.android.com/topic/libraries/data-binding/)
 
 * [GSON](https://github.com/google/gson) : to serialize and deserialize POJO/POKO to JSON and reverse
 * [Retrofit](https://github.com/square/retrofit) : to make REST API calls

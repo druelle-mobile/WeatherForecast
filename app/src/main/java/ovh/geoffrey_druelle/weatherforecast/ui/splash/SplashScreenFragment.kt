@@ -30,9 +30,7 @@ class SplashScreenFragment : BaseFragment<SplashScreenFragmentBinding>() {
     }
 
     private lateinit var viewModel: SplashScreenViewModel
-//    private var viewModel: SplashScreenViewModel = getViewModel()
-//    val viewModel: SplashScreenViewModel by viewModel()
-//    val viewModel: SplashScreenViewModel by inject()
+
     private var exit: Boolean = false
 
     @LayoutRes

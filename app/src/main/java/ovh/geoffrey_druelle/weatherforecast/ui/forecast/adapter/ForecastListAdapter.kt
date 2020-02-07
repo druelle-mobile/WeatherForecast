@@ -13,7 +13,9 @@ import ovh.geoffrey_druelle.weatherforecast.WeatherForecastApplication.Companion
 import ovh.geoffrey_druelle.weatherforecast.data.local.model.ForecastEntity
 import ovh.geoffrey_druelle.weatherforecast.data.repository.ForecastRepository
 import ovh.geoffrey_druelle.weatherforecast.databinding.ForecastListItemBinding
+import ovh.geoffrey_druelle.weatherforecast.ui.detail.DetailsFragment
 import ovh.geoffrey_druelle.weatherforecast.ui.forecast.ForecastListViewModel
+import ovh.geoffrey_druelle.weatherforecast.ui.main.MainActivity
 import ovh.geoffrey_druelle.weatherforecast.utils.helper.attributeColorToDay
 import ovh.geoffrey_druelle.weatherforecast.utils.helper.getDay
 import ovh.geoffrey_druelle.weatherforecast.utils.helper.getIcon
@@ -64,7 +66,8 @@ class ForecastListAdapter(
     }
 
     private fun openDetails(forecast: ForecastEntity) {
-
+        val fragmentTransaction = MainActivity.instance.supportFragmentManager.beginTransaction()
+        DetailsFragment.show(fragmentTransaction, forecast)
     }
 
     inner class ForecastViewHolder(view: View) : RecyclerView.ViewHolder(view) {

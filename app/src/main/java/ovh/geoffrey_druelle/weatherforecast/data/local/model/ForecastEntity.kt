@@ -1,11 +1,14 @@
 package ovh.geoffrey_druelle.weatherforecast.data.local.model
 
+import android.os.Parcel
+import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
+import kotlinx.android.parcel.Parcelize
 
-
+@Parcelize
 @Entity(
     foreignKeys = [
         ForeignKey(
@@ -39,7 +42,7 @@ data class ForecastEntity(
     var weatherIcon: String,
     var degWind: Int,
     var speedWind: Double
-) {
+) : Parcelable {
 
     @Ignore
     constructor() : this(

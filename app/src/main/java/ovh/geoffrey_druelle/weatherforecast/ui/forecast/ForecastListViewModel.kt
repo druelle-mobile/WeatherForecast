@@ -26,7 +26,13 @@ class ForecastListViewModel : BaseViewModel(), CoroutineScope {
 
     val forecastList: LiveData<List<ForecastEntity>> = forecastRepository.getForecastList()
 
-//    val city: LiveData<CityEntity> = cityRepository.getCity(forecastList.value!![0].cityId)
+    lateinit var city: LiveData<CityEntity>
+
+    fun initCityLiveData() {
+        if (forecastList.value!!.isNotEmpty()) {
+            city = cityRepository.getLiveCity(forecastList.value!![0].cityId)
+        }
+    }
 
     override fun onCleared() {
         job.cancel()

@@ -8,7 +8,7 @@ data class City(
     @SerializedName("id") val id: Int,
     @SerializedName("name") val name: String,
     @SerializedName("population") val population: Int,
-    @SerializedName("sunrise") val sunrise: Int,
-    @SerializedName("sunset") val sunset: Int,
+    @SerializedName("sunrise") val sunrise: Long,
+    @SerializedName("sunset") val sunset: Long,
     @SerializedName("timezone") val timezone: Int
 )

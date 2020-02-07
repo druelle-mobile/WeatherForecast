@@ -1,6 +1,7 @@
 package ovh.geoffrey_druelle.weatherforecast.utils.helper
 
 import android.graphics.Color
+import java.text.SimpleDateFormat
 import java.util.*
 
 fun getDay(dt: Long): String {
@@ -36,4 +37,11 @@ private fun getDayOfWeek(dt: Long): Int {
     calendar.time = date
 
     return calendar.get(Calendar.DAY_OF_WEEK)
+}
+
+fun getDayAndHours(time: Long): String {
+    val date = Date(time * 1000)
+    val simpleDateFormatError =  SimpleDateFormat("dd/MM/yyyy HH:mm:ss")
+
+    return simpleDateFormatError.format(date)
 }

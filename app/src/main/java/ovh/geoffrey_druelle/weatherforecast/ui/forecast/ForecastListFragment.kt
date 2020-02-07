@@ -33,10 +33,25 @@ class ForecastListFragment : BaseFragment<ForecastListFragmentBinding>() {
         binding.vm = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
-//        val title = String.format("%s, %s", viewModel.city.value?.name, viewModel.city.value?.country)
-//        (activity as MainActivity).viewModel.appBarTitle.set(title)
+        initListObs()
+
 
         return root
+    }
+
+    private fun initListObs() {
+        viewModel.forecastList.obs(this) {
+            initCityObs()
+        }
+    }
+
+    private fun initCityObs() {
+        viewModel.initCityLiveData()
+        viewModel.city.obs(this) {
+            val title =
+                String.format("%s, %s", viewModel.city.value?.name, viewModel.city.value?.country)
+            (activity as MainActivity).viewModel.appBarTitle.set(title)
+        }
     }
 
 }

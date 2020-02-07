@@ -12,8 +12,8 @@ data class CityEntity(
     var country: String,
     var lat: Double,
     var lon: Double,
-    var sunrise: Int,
-    var sunset: Int,
+    var sunrise: Long,
+    var sunset: Long,
     var timezone: Int
 ) {
 

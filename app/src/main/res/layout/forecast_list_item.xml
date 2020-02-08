@@ -18,13 +18,15 @@
         android:id="@+id/forecast_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/_8sdp"
-        app:cardCornerRadius="4dp">
+        android:layout_margin="@dimen/_6sdp"
+        app:contentPaddingBottom="@dimen/_8sdp"
+        app:contentPaddingTop="@dimen/_8sdp"
+        android:elevation="@dimen/_4sdp"
+        app:cardCornerRadius="24dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="@dimen/_4sdp">
+            android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/day"

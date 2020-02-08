@@ -1,9 +1,14 @@
 package ovh.geoffrey_druelle.weatherforecast.ui.main
 
 import android.Manifest
+import android.app.SearchManager
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Toast
+import androidx.appcompat.widget.SearchView
 import androidx.navigation.findNavController
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import ovh.geoffrey_druelle.weatherforecast.R
@@ -38,33 +43,75 @@ class MainActivity : BaseActivity<ActivityMainBinding>(),
         binding.lifecycleOwner = this
 
         setSupportActionBar(binding.toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(false)
         setupToolbar()
 
 //        hasGenericPermission()
     }
 
     private fun setupToolbar() {
+        supportActionBar?.setDisplayHomeAsUpEnabled(false)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+
         val navController = findNavController(R.id.nav_host_fragment)
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
                 R.id.splashScreenFragment -> binding.toolbar.hide()
                 R.id.homeFragment -> {
-                    binding.toolbar.show()
+                    binding.toolbar
                 }
-//                R.id.detailsFragment -> {
-//                    binding.toolbar.visibility = VISIBLE
-//                }
 //                R.id.aboutFragment -> {
-//                    binding.toolbar.visibility = VISIBLE
+//                    binding.toolbar.show()
+//                    supportActionBar?.setDisplayHomeAsUpEnabled(true)
 //                }
             }
         }
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu, menu)
+        setSearchView(menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    private fun setSearchView(menu: Menu?) {
+        val manager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        val searchItem = menu?.findItem(R.id.action_search)
+        val searchView = searchItem?.actionView as SearchView
+
+        searchView.setSearchableInfo(manager.getSearchableInfo(componentName))
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                searchView.clearFocus()
+                searchView.setQuery("", false)
+                searchView.onActionViewCollapsed()
+                Toast.makeText(instance, "Looking for $query", Toast.LENGTH_SHORT).show()
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                Toast.makeText(instance, "Looking for $newText", Toast.LENGTH_SHORT).show()
+                return false
+            }
+        })
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.home -> {
+                onBackPressed()
+                return true
+            }
+            R.id.action_search -> {
+
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
     /*
-    Init EasyPermissions checkin
-     */
+            Init EasyPermissions checking
+             */
     private val location = arrayOf(
         Manifest.permission.ACCESS_FINE_LOCATION,
         Manifest.permission.ACCESS_COARSE_LOCATION

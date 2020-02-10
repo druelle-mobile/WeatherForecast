@@ -7,7 +7,7 @@ import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.module.Module
 import org.koin.dsl.module
-import ovh.geoffrey_druelle.weatherforecast.BuildConfig.OPENWEATHERMAP_APIKEY
+import ovh.geoffrey_druelle.weatherforecast.BuildConfig.OPEN_WEATHER_API_KEY
 import ovh.geoffrey_druelle.weatherforecast.data.local.database.WeatherForecastDatabase
 import ovh.geoffrey_druelle.weatherforecast.data.remote.api.OpenWeatherMapApi
 import ovh.geoffrey_druelle.weatherforecast.ui.forecast.ForecastListViewModel
@@ -68,7 +68,7 @@ fun apiInterceptor() = Interceptor { chain ->
                 header("Content-Type", "application/json; charset=utf-8")
             }
             .url(chain.request().url().newBuilder()
-                .addQueryParameter("appid", OPENWEATHERMAP_APIKEY)
+                .addQueryParameter("appid", OPEN_WEATHER_API_KEY)
                 .build())
             .build()
     )

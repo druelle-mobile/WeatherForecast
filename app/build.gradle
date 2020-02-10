@@ -14,7 +14,7 @@ android {
         versionCode version_code
         versionName version_name
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField("String", "OPENWEATHERMAP_APIKEY", api_key_properties["OPENWEATHERMAP_APIKEY"])
+        buildConfigField("String", "OPEN_WEATHER_API_KEY", api_key_properties["OPEN_WEATHER_API_KEY"])
     }
     buildTypes {
         release {

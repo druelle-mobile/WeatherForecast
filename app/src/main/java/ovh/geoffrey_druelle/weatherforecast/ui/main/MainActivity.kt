@@ -106,6 +106,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(),
         changeSearchViewTextColor(searchView)
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+
             override fun onQueryTextSubmit(query: String): Boolean {
                 searchView.clearFocus()
                 searchView.setQuery("", false)
@@ -117,15 +118,17 @@ class MainActivity : BaseActivity<ActivityMainBinding>(),
             }
 
             override fun onQueryTextChange(newText: String): Boolean {
-                getCitiesFromDatabase(newText)
-
-                return true
+                return if (newText.isEmpty() || newText.trim() == "")
+                    false
+                else {
+                    getCitiesFromDatabase(newText)
+                    true
+                }
             }
         })
     }
 
     private fun getCitiesFromDatabase(searchText: String) {
-//        val searchTextQuery = "%$searchText"
         citiesListItemRepository.getCitiesFromName(searchText)
             .obs(this) {
                 val adapter =

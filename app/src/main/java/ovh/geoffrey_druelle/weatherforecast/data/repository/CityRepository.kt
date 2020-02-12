@@ -33,11 +33,11 @@ class CityRepository(app: Application) : CoroutineScope {
         }
     }
 
-    fun getLiveCity(id: Int): LiveData<CityEntity> {
+    fun getLiveCity(id: Long): LiveData<CityEntity> {
         return cityDao.getLiveCityFromId(id)
     }
 
-    suspend fun getCity(id: Int): CityEntity {
+    suspend fun getCity(id: Long): CityEntity {
         return withContext(Dispatchers.IO) {
             cityDao.getCityFromId(id)
         }

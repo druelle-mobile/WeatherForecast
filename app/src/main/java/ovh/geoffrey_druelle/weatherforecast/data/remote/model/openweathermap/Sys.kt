@@ -1,4 +1,4 @@
-package ovh.geoffrey_druelle.weatherforecast.data.remote.model
+package ovh.geoffrey_druelle.weatherforecast.data.remote.model.openweathermap
 
 import  com.google.gson.annotations.SerializedName
 

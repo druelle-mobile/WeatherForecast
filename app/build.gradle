@@ -67,9 +67,6 @@ dependencies {
     implementation deps.navigation.fragment
     // Room
     implementation deps.room.runtime
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
     kapt deps.room.compiler
     implementation deps.room.ktx
     implementation deps.room.rxjava2

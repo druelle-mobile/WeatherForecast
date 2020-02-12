@@ -6,9 +6,11 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
+import ovh.geoffrey_druelle.weatherforecast.data.local.dao.CitiesListItemDao
 import ovh.geoffrey_druelle.weatherforecast.data.local.dao.CityDao
 import ovh.geoffrey_druelle.weatherforecast.data.local.dao.ForecastDao
 import ovh.geoffrey_druelle.weatherforecast.data.local.database.WeatherForecastDatabase.Companion.databaseVersion
+import ovh.geoffrey_druelle.weatherforecast.data.local.model.CitiesListItemEntity
 import ovh.geoffrey_druelle.weatherforecast.data.local.model.CityEntity
 import ovh.geoffrey_druelle.weatherforecast.data.local.model.ForecastEntity
 import ovh.geoffrey_druelle.weatherforecast.utils.DB_NAME
@@ -16,16 +18,18 @@ import ovh.geoffrey_druelle.weatherforecast.utils.DB_NAME
 @Database(
     entities = [
         ForecastEntity::class,
-        CityEntity::class
+        CityEntity::class,
+        CitiesListItemEntity::class
     ],
     version = databaseVersion,
     exportSchema = false
 )
 abstract class WeatherForecastDatabase : RoomDatabase() {
     abstract fun cityDao(): CityDao
+    abstract fun citiesListDao(): CitiesListItemDao
     abstract fun forecastDao(): ForecastDao
 
-            companion object {
+    companion object {
         @Volatile
         private var instance: WeatherForecastDatabase? = null
         const val databaseVersion = 1

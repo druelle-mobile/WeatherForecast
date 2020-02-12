@@ -21,24 +21,16 @@
             android:layout_height="?attr/actionBarSize"
             android:background="@color/colorPrimary"
             android:elevation="@dimen/_8sdp"
-            android:theme="@style/ThemeOverlay.MaterialComponents.ActionBar"
+            android:theme="@style/ToolbarStyle"
+            app:titleTextColor="@color/white"
+            app:title="@{vm.appBarTitle}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:popupTheme="@style/ThemeOverlay.MaterialComponents.Dark">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@{vm.appBarTitle}"
-                android:textColor="@color/white"
-                android:textSize="@dimen/_20ssp"
-                tools:text="TEST" />
-
-        </androidx.appcompat.widget.Toolbar>
+            tools:title="TEST"
+            app:popupTheme="@style/ToolbarOverlay"/>
 
         <fragment
             android:id="@+id/nav_host_fragment"
@@ -53,6 +45,18 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/toolbar"
             app:navGraph="@navigation/nav_graph" />
+
+        <ListView
+            android:id="@+id/search_result"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            android:background="@color/smokeGrey"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

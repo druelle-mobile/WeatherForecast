@@ -5,27 +5,17 @@ import androidx.room.Ignore
 import androidx.room.PrimaryKey
 
 @Entity
-data class CityEntity(
+class CitiesListItemEntity(
     @PrimaryKey(autoGenerate = false)
     var id: Long,
     var name: String,
-    var country: String,
-    var lat: Double,
-    var lon: Double,
-    var sunrise: Long,
-    var sunset: Long,
-    var timezone: Int
+    var country: String
 ) {
 
     @Ignore
     constructor() : this(
         id = 0,
         name = "",
-        country = "",
-        lat = 0.0,
-        lon = 0.0,
-        sunset = 0,
-        sunrise = 0,
-        timezone = 0
+        country = ""
     )
 }

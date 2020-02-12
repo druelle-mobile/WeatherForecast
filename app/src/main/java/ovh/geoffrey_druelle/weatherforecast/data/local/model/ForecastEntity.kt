@@ -22,7 +22,7 @@ import kotlinx.android.parcel.Parcelize
 data class ForecastEntity(
     @PrimaryKey(autoGenerate = true)
     var id: Long,
-    var cityId: Int,
+    var cityId: Long,
     var dt: Long,
     var dt_txt: String,
     var cloudsAll: Int,

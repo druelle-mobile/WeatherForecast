@@ -20,8 +20,8 @@ interface CityDao : BaseDao<CityEntity> {
     fun deleteAll()
 
     @Query("SELECT * FROM CityEntity WHERE id = :id")
-    fun getLiveCityFromId(id: Int): LiveData<CityEntity>
+    fun getLiveCityFromId(id: Long): LiveData<CityEntity>
 
     @Query("SELECT * FROM CityEntity WHERE id = :id")
-    fun getCityFromId(id: Int): CityEntity
+    fun getCityFromId(id: Long): CityEntity
 }

@@ -4,17 +4,25 @@ import android.Manifest
 import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.navigation.findNavController
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import ovh.geoffrey_druelle.weatherforecast.R
+import ovh.geoffrey_druelle.weatherforecast.WeatherForecastApplication
 import ovh.geoffrey_druelle.weatherforecast.core.BaseActivity
+import ovh.geoffrey_druelle.weatherforecast.data.repository.CitiesListItemRepository
 import ovh.geoffrey_druelle.weatherforecast.databinding.ActivityMainBinding
+import ovh.geoffrey_druelle.weatherforecast.ui.main.search.SearchAdapter
 import ovh.geoffrey_druelle.weatherforecast.utils.extension.hide
+import ovh.geoffrey_druelle.weatherforecast.utils.extension.obs
 import ovh.geoffrey_druelle.weatherforecast.utils.extension.show
 import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions.*
@@ -32,6 +40,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(),
     override fun getLayoutResId(): Int = R.layout.activity_main
 
     lateinit var viewModel: MainActivityViewModel
+    val citiesListItemRepository = CitiesListItemRepository(WeatherForecastApplication.instance)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,7 +53,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(),
 
         setSupportActionBar(binding.toolbar)
         setupToolbar()
-
+        binding.searchResult.hide()
 //        hasGenericPermission()
     }
 
@@ -57,7 +66,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(),
             when (destination.id) {
                 R.id.splashScreenFragment -> binding.toolbar.hide()
                 R.id.homeFragment -> {
-                    binding.toolbar
+                    binding.toolbar.show()
                 }
 //                R.id.aboutFragment -> {
 //                    binding.toolbar.show()
@@ -67,10 +76,25 @@ class MainActivity : BaseActivity<ActivityMainBinding>(),
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu, menu)
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.main_menu, menu)
         setSearchView(menu)
         return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.home -> {
+                onBackPressed()
+                binding.searchResult.hide()
+                true
+            }
+            R.id.action_search -> {
+                binding.searchResult.show()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     private fun setSearchView(menu: Menu?) {
@@ -79,33 +103,49 @@ class MainActivity : BaseActivity<ActivityMainBinding>(),
         val searchView = searchItem?.actionView as SearchView
 
         searchView.setSearchableInfo(manager.getSearchableInfo(componentName))
+        changeSearchViewTextColor(searchView)
+
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
+            override fun onQueryTextSubmit(query: String): Boolean {
                 searchView.clearFocus()
                 searchView.setQuery("", false)
                 searchView.onActionViewCollapsed()
-                Toast.makeText(instance, "Looking for $query", Toast.LENGTH_SHORT).show()
+
+                getCitiesFromDatabase(query)
+
                 return true
             }
 
-            override fun onQueryTextChange(newText: String?): Boolean {
-                Toast.makeText(instance, "Looking for $newText", Toast.LENGTH_SHORT).show()
-                return false
+            override fun onQueryTextChange(newText: String): Boolean {
+                getCitiesFromDatabase(newText)
+
+                return true
             }
         })
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.home -> {
-                onBackPressed()
-                return true
+    private fun getCitiesFromDatabase(searchText: String) {
+//        val searchTextQuery = "%$searchText"
+        citiesListItemRepository.getCitiesFromName(searchText)
+            .obs(this) {
+                val adapter =
+                    SearchAdapter(
+                        this@MainActivity,
+                        R.layout.search_list_item,
+                        it
+                    )
+                binding.searchResult.adapter = adapter
             }
-            R.id.action_search -> {
+    }
 
-                true
+    private fun changeSearchViewTextColor(view: View) {
+        if (view is TextView) {
+            view.setTextColor(Color.WHITE)
+            return
+        } else if (view is ViewGroup) {
+            for (i in 0 until view.childCount) {
+                changeSearchViewTextColor(view.getChildAt(i))
             }
-            else -> super.onOptionsItemSelected(item)
         }
     }
 
@@ -141,7 +181,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>(),
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        onRequestPermissionsResult(requestCode, permissions, grantResults,
+        onRequestPermissionsResult(
+            requestCode, permissions, grantResults,
             instance
         )
     }

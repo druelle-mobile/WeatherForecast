@@ -2,18 +2,21 @@ package ovh.geoffrey_druelle.weatherforecast.ui.splash
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.runBlocking
+import com.google.gson.GsonBuilder
+import com.google.gson.JsonArray
+import kotlinx.coroutines.*
 import ovh.geoffrey_druelle.weatherforecast.WeatherForecastApplication.Companion.appContext
 import ovh.geoffrey_druelle.weatherforecast.WeatherForecastApplication.Companion.instance
 import ovh.geoffrey_druelle.weatherforecast.core.BaseViewModel
+import ovh.geoffrey_druelle.weatherforecast.data.local.model.CitiesListItemEntity
 import ovh.geoffrey_druelle.weatherforecast.data.local.model.CityEntity
 import ovh.geoffrey_druelle.weatherforecast.data.local.model.ForecastEntity
+import ovh.geoffrey_druelle.weatherforecast.data.remote.api.CitiesListApi
 import ovh.geoffrey_druelle.weatherforecast.data.remote.api.OpenWeatherMapApi
-import ovh.geoffrey_druelle.weatherforecast.data.remote.model.Forecast
-import ovh.geoffrey_druelle.weatherforecast.data.remote.model.ListItem
+import ovh.geoffrey_druelle.weatherforecast.data.remote.model.cities.CitiesListItem
+import ovh.geoffrey_druelle.weatherforecast.data.remote.model.openweathermap.Forecast
+import ovh.geoffrey_druelle.weatherforecast.data.remote.model.openweathermap.ListItem
+import ovh.geoffrey_druelle.weatherforecast.data.repository.CitiesListItemRepository
 import ovh.geoffrey_druelle.weatherforecast.data.repository.CityRepository
 import ovh.geoffrey_druelle.weatherforecast.data.repository.ForecastRepository
 import ovh.geoffrey_druelle.weatherforecast.utils.helper.ConnectivityHelper.isConnectedToNetwork
@@ -23,7 +26,10 @@ import retrofit2.Response
 import timber.log.Timber
 import kotlin.coroutines.CoroutineContext
 
-class SplashScreenViewModel(private val api: OpenWeatherMapApi) : BaseViewModel(), CoroutineScope {
+class SplashScreenViewModel(
+    private val owmApi: OpenWeatherMapApi,
+    private val cityApi: CitiesListApi
+) : BaseViewModel(), CoroutineScope {
 
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main + job
@@ -32,6 +38,7 @@ class SplashScreenViewModel(private val api: OpenWeatherMapApi) : BaseViewModel(
 
     private var forecastRepository = ForecastRepository(instance)
     private var cityRepository = CityRepository(instance)
+    private var citiesListRepository = CitiesListItemRepository(instance)
 
     private val _isConnected = MutableLiveData<Boolean>()
     val isConnected: LiveData<Boolean>
@@ -44,10 +51,6 @@ class SplashScreenViewModel(private val api: OpenWeatherMapApi) : BaseViewModel(
     private val _isConnectionNeeded = MutableLiveData<Boolean>()
     val isConnectionNeeded: LiveData<Boolean>
         get() = _isConnectionNeeded
-
-    private val _succeedRequestForDatas = MutableLiveData<Boolean>()
-    val succeedRequestForDatas: LiveData<Boolean>
-        get() = _succeedRequestForDatas
 
     private val _navToHome = MutableLiveData<Boolean>()
     val navToHome: LiveData<Boolean>
@@ -65,44 +68,159 @@ class SplashScreenViewModel(private val api: OpenWeatherMapApi) : BaseViewModel(
     }
 
     private fun testConnection() {
-        var bool: Boolean
-        if (isConnectedToNetwork(appContext)) {
+        val bool: Boolean = if (isConnectedToNetwork(appContext)) {
             _isConnected.postValue(true)
-            bool = true
+            true
         } else {
             _isConnected.postValue(false)
-            bool = false
+            false
         }
 
-        downloadDatas(bool)
+        checkCitiesListDatas(bool)
+//        downloadForecastDatas(bool)
     }
 
-    private fun downloadDatas(bool: Boolean) {
-        val count = runBlocking {
-            forecastRepository.countForecastEntries()
+    private fun checkCitiesListDatas(bool: Boolean) {
+        val citiesListCount = runBlocking {
+            citiesListRepository.getLength()
         }
 
         when {
-            bool -> launchRequestForDatas()
-            count != 0 -> _navToHome.postValue(true)
+            bool && citiesListCount != 0 -> checkForecastDatas(bool)
+            bool && citiesListCount == 0 -> {
+                launchRequestForCitiesList(bool)
+            }
             else -> _noDataNoConnection.postValue(true)
         }
     }
 
-    private fun launchRequestForDatas() {
-        val call: Call<Forecast> = api.getFullDatas("Paris", "metric")
-        Timber.i("Call : %s", call.toString())
-        call.enqueue(object : Callback<Forecast> {
-            override fun onFailure(call: Call<Forecast>, t: Throwable) {
-                Timber.d(String.format("launchRequestForDatas : Failure on call - %s", t))
+    private fun checkForecastDatas(bool: Boolean) {
+        val forecastCount = runBlocking {
+            forecastRepository.countForecastEntries()
+        }
+
+        when {
+            bool -> launchRequestForForecastDatas()
+            forecastCount != 0 -> _navToHome.postValue(true)
+            else -> _noDataNoConnection.postValue(true)
+        }
+    }
+
+//    private fun downloadForecastDatas(bool: Boolean) {
+//        val forecastCount = runBlocking {
+//            forecastRepository.countForecastEntries()
+//        }
+//        val citiesListCount = runBlocking {
+//            citiesListRepository.getLength()
+//        }
+//        when {
+//            bool && citiesListCount != 0 -> launchRequestForForecastDatas()
+//            bool && citiesListCount == 0 -> {
+//                launchRequestForForecastDatas()
+//                launchRequestForCitiesList()
+//            }
+//            forecastCount != 0 && citiesListCount != 0 -> _navToHome.postValue(true)
+//            else -> _noDataNoConnection.postValue(true)
+//        }
+//    }
+
+    private fun launchRequestForCitiesList(bool: Boolean) {
+        val call: Call<JsonArray> = cityApi.readJson()
+        call.enqueue(object : Callback<JsonArray> {
+            override fun onFailure(call: Call<JsonArray>, t: Throwable) {
+                Timber.d(String.format("launchRequestForCitiesList : Failure on call - %s", t))
                 Timber.d(
                     String.format(
-                        "launchRequestForDatas : Failure on call - %s",
+                        "launchRequestForCitiesList : Failure on call - %s",
                         t.stackTrace
                     )
                 )
-                Timber.d(String.format("launchRequestForDatas : Failure on call - %s", t.cause))
-                Timber.d(String.format("launchRequestForDatas : Failure on call - %s", t.message))
+                Timber.d(
+                    String.format(
+                        "launchRequestForCitiesList : Failure on call - %s",
+                        t.cause
+                    )
+                )
+                Timber.d(
+                    String.format(
+                        "launchRequestForCitiesList : Failure on call - %s",
+                        t.message
+                    )
+                )
+            }
+
+            override fun onResponse(call: Call<JsonArray>, response: Response<JsonArray>) {
+                val jsonArray = response.body() as JsonArray
+                if (response.isSuccessful) {
+                    getCitiesListFromJsonArray(jsonArray, bool)
+                } else {
+                    Timber.d(String.format("launchRequestForCitiesList: got response but not successful"))
+                }
+            }
+        })
+    }
+
+    private fun getCitiesListFromJsonArray(
+        jsonArray: JsonArray,
+        bool: Boolean
+    ) {
+        runBlocking {
+            withContext(Dispatchers.IO) {
+                val gsonBuilder = GsonBuilder().serializeNulls()
+                val gson = gsonBuilder.create()
+                val citiesListItem: List<CitiesListItem> =
+                    gson.fromJson(jsonArray, Array<CitiesListItem>::class.java).toList()
+                populateCitiesListDatabase(citiesListItem, bool)
+            }
+        }
+    }
+
+    private fun populateCitiesListDatabase(
+        citiesListItem: List<CitiesListItem>,
+        bool: Boolean
+    ) {
+        runBlocking {
+            for (i in citiesListItem.indices) {
+
+                citiesListRepository.insert(createCitiesListObject(citiesListItem[i]))
+            }
+            citiesListRepository.deleteContinents()
+            checkForecastDatas(bool)
+        }
+    }
+
+    private fun createCitiesListObject(item: CitiesListItem): CitiesListItemEntity {
+        val citiesListItem = CitiesListItemEntity()
+        citiesListItem.id = item.id
+        citiesListItem.name = item.name
+        citiesListItem.country = item.country
+        return citiesListItem
+    }
+
+    private fun launchRequestForForecastDatas() {
+        val call: Call<Forecast> = owmApi.getFullDatas("Paris", "metric")
+        Timber.i("Call : %s", call.toString())
+        call.enqueue(object : Callback<Forecast> {
+            override fun onFailure(call: Call<Forecast>, t: Throwable) {
+                Timber.d(String.format("launchRequestForForecastDatas : Failure on call - %s", t))
+                Timber.d(
+                    String.format(
+                        "launchRequestForForecastDatas : Failure on call - %s",
+                        t.stackTrace
+                    )
+                )
+                Timber.d(
+                    String.format(
+                        "launchRequestForForecastDatas : Failure on call - %s",
+                        t.cause
+                    )
+                )
+                Timber.d(
+                    String.format(
+                        "launchRequestForForecastDatas : Failure on call - %s",
+                        t.message
+                    )
+                )
             }
 
             override fun onResponse(
@@ -112,35 +230,32 @@ class SplashScreenViewModel(private val api: OpenWeatherMapApi) : BaseViewModel(
                 Timber.i("Response : %s", response.message().toString())
                 Timber.i("Response : %s", response.body().toString())
                 if (response.isSuccessful) {
-                    succeedRequestForDatas()
                     val forecast: Forecast = response.body()!!
-                    cleanDatabase()
-                    populateDatabase(forecast)
+                    cleanForecastDatabase()
+                    populateForecastDatabase(forecast)
                     _noDataNoConnection.postValue(false)
-                    _navToHome.postValue(true)
+//                    _navToHome.postValue(true)
                 } else {
-                    failedRequestForDatas()
                     Timber.d(String.format("launchRequestForDatas: got response but not successful"))
                 }
             }
         })
     }
 
-    private fun cleanDatabase() {
+    private fun cleanForecastDatabase() {
         runBlocking {
             forecastRepository.deleteAll()
             cityRepository.deleteAll()
         }
     }
 
-    private fun populateDatabase(forecast: Forecast) {
-
-
+    private fun populateForecastDatabase(forecast: Forecast) {
         runBlocking {
             cityRepository.insert(createCityObject(forecast))
             for (i in forecast.list.indices) {
                 forecastRepository.insert(createForecastObject(forecast.city.id, forecast.list[i]))
             }
+            _navToHome.postValue(true)
         }
     }
 
@@ -159,7 +274,7 @@ class SplashScreenViewModel(private val api: OpenWeatherMapApi) : BaseViewModel(
     }
 
     private fun createForecastObject(
-        cityId: Int,
+        cityId: Long,
         listItem: ListItem
     ): ForecastEntity {
         val item = ForecastEntity()
@@ -185,14 +300,5 @@ class SplashScreenViewModel(private val api: OpenWeatherMapApi) : BaseViewModel(
         item.speedWind = listItem.wind.speed
 
         return item
-    }
-
-
-    internal fun failedRequestForDatas() {
-        _succeedRequestForDatas.postValue(false)
-    }
-
-    internal fun succeedRequestForDatas() {
-        _succeedRequestForDatas.postValue(true)
     }
 }

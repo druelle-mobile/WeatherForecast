@@ -9,16 +9,16 @@ import ovh.geoffrey_druelle.weatherforecast.WeatherForecastApplication.Companion
 import ovh.geoffrey_druelle.weatherforecast.WeatherForecastApplication.Companion.instance
 import ovh.geoffrey_druelle.weatherforecast.core.BaseViewModel
 import ovh.geoffrey_druelle.weatherforecast.data.local.model.CitiesListItemEntity
-import ovh.geoffrey_druelle.weatherforecast.data.local.model.CityEntity
-import ovh.geoffrey_druelle.weatherforecast.data.local.model.ForecastEntity
 import ovh.geoffrey_druelle.weatherforecast.data.remote.api.CitiesListApi
 import ovh.geoffrey_druelle.weatherforecast.data.remote.api.OpenWeatherMapApi
 import ovh.geoffrey_druelle.weatherforecast.data.remote.model.cities.CitiesListItem
 import ovh.geoffrey_druelle.weatherforecast.data.remote.model.openweathermap.Forecast
-import ovh.geoffrey_druelle.weatherforecast.data.remote.model.openweathermap.ListItem
 import ovh.geoffrey_druelle.weatherforecast.data.repository.CitiesListItemRepository
 import ovh.geoffrey_druelle.weatherforecast.data.repository.CityRepository
 import ovh.geoffrey_druelle.weatherforecast.data.repository.ForecastRepository
+import ovh.geoffrey_druelle.weatherforecast.utils.cleanForecastDatabase
+import ovh.geoffrey_druelle.weatherforecast.utils.createCityObject
+import ovh.geoffrey_druelle.weatherforecast.utils.createForecastObject
 import ovh.geoffrey_druelle.weatherforecast.utils.helper.ConnectivityHelper.isConnectedToNetwork
 import retrofit2.Call
 import retrofit2.Callback
@@ -181,7 +181,6 @@ class SplashScreenViewModel(
     ) {
         runBlocking {
             for (i in citiesListItem.indices) {
-
                 citiesListRepository.insert(createCitiesListObject(citiesListItem[i]))
             }
             citiesListRepository.deleteContinents()
@@ -198,7 +197,7 @@ class SplashScreenViewModel(
     }
 
     private fun launchRequestForForecastDatas() {
-        val call: Call<Forecast> = owmApi.getFullDatas("Paris", "metric")
+        val call: Call<Forecast> = owmApi.getDatasFromCityName("Paris", "metric")
         Timber.i("Call : %s", call.toString())
         call.enqueue(object : Callback<Forecast> {
             override fun onFailure(call: Call<Forecast>, t: Throwable) {
@@ -234,19 +233,11 @@ class SplashScreenViewModel(
                     cleanForecastDatabase()
                     populateForecastDatabase(forecast)
                     _noDataNoConnection.postValue(false)
-//                    _navToHome.postValue(true)
                 } else {
                     Timber.d(String.format("launchRequestForDatas: got response but not successful"))
                 }
             }
         })
-    }
-
-    private fun cleanForecastDatabase() {
-        runBlocking {
-            forecastRepository.deleteAll()
-            cityRepository.deleteAll()
-        }
     }
 
     private fun populateForecastDatabase(forecast: Forecast) {
@@ -257,48 +248,5 @@ class SplashScreenViewModel(
             }
             _navToHome.postValue(true)
         }
-    }
-
-    private fun createCityObject(forecast: Forecast): CityEntity {
-        val city = CityEntity()
-        city.id = forecast.city.id
-        city.name = forecast.city.name
-        city.country = forecast.city.country
-        city.lat = forecast.city.coord.lat
-        city.lon = forecast.city.coord.lon
-        city.sunrise = forecast.city.sunrise
-        city.sunset = forecast.city.sunset
-        city.timezone = forecast.city.timezone
-
-        return city
-    }
-
-    private fun createForecastObject(
-        cityId: Long,
-        listItem: ListItem
-    ): ForecastEntity {
-        val item = ForecastEntity()
-        item.cityId = cityId
-        item.dt = listItem.dt
-        item.dt_txt = listItem.dt_txt
-        item.cloudsAll = listItem.clouds.all
-        item.feelsLike = listItem.main.feels_like
-        item.grndLevel = listItem.main.grnd_level
-        item.humidity = listItem.main.humidity
-        item.pressure = listItem.main.pressure
-        item.seaLevel = listItem.main.sea_level
-        item.temp = listItem.main.temp
-        item.tempKf = listItem.main.temp_kf
-        item.tempMax = listItem.main.temp_max
-        item.tempMin = listItem.main.temp_min
-        item.volumeRainLastThreeHours = listItem.rain?.volumeRainLastThreeHours
-        item.volumeSnowLastThreeHours = listItem.snow?.volumeSnowLastThreeHours
-        item.pod = listItem.sys.pod
-        item.weatherId = listItem.weather[0].id
-        item.weatherIcon = listItem.weather[0].icon
-        item.degWind = listItem.wind.deg
-        item.speedWind = listItem.wind.speed
-
-        return item
     }
 }

@@ -6,7 +6,8 @@
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/_8sdp"
     app:cardCornerRadius="4dp"
-    tools:context="ovh.geoffrey_druelle.weatherforecast.ui.detail.DetailsFragment">
+    tools:context="ovh.geoffrey_druelle.weatherforecast.ui.detail.DetailsFragment"
+    android:background="@color/smokeGrey">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -14,12 +15,18 @@
         android:layout_margin="@dimen/_4sdp"
         tools:context=".ui.detail.DetailsFragment">
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/gl_twentyfive_vert"
+        <TextView
+            android:id="@+id/hot_or_cold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.25" />
+            android:textSize="@dimen/_16ssp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="HOT" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/gl_fifty_vert"
@@ -28,71 +35,69 @@
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.5" />
 
-
         <ImageView
             android:id="@+id/weather_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/gl_twentyfive_vert"
+            app:layout_constraintEnd_toStartOf="@id/gl_fifty_vert"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@id/gl_twentyfive_vert"
+            app:layout_constraintRight_toLeftOf="@id/gl_fifty_vert"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/hot_or_cold"
             tools:src="@drawable/few_clouds_day" />
-
-        <TextView
-            android:id="@+id/temperature"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@id/weather_desc"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="20 °C" />
-
-        <TextView
-            android:id="@+id/hot_or_cold"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="HOT" />
 
         <TextView
             android:id="@+id/weather_desc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@id/feel_temperature"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:textSize="@dimen/_14ssp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/gl_seventyfive_hor"
+            app:layout_constraintEnd_toStartOf="@id/gl_fifty_vert"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/gl_fifty_vert"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/temperature"
+            app:layout_constraintTop_toBottomOf="@id/weather_icon"
             tools:text="nuageux" />
+
+        <TextView
+            android:id="@+id/temperature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/_18ssp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/feel_temperature"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/gl_fifty_vert"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toEndOf="@id/gl_fifty_vert"
+            app:layout_constraintTop_toBottomOf="@id/hot_or_cold"
+            tools:text="20 °C" />
 
         <TextView
             android:id="@+id/feel_temperature"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@id/min_temmperature"
+            android:textSize="@dimen/_14ssp"
+            app:layout_constraintBottom_toTopOf="@+id/min_temmperature"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/gl_fifty_vert"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/weather_desc"
+            app:layout_constraintStart_toEndOf="@id/gl_fifty_vert"
+            app:layout_constraintTop_toBottomOf="@id/temperature"
             tools:text="Ressenti 18 °C" />
 
         <TextView
             android:id="@+id/min_temmperature"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@+id/wind_speed"
-            app:layout_constraintEnd_toStartOf="@id/gl_fifty_vert"
-            app:layout_constraintRight_toLeftOf="@id/gl_fifty_vert"
+            android:textColor="@color/blue"
+            android:textSize="@dimen/_14ssp"
+            app:layout_constraintBottom_toTopOf="@+id/max_temmperature"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/gl_fifty_vert"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toEndOf="@id/gl_fifty_vert"
             app:layout_constraintTop_toBottomOf="@id/feel_temperature"
             tools:text="min 10 °C" />
 
@@ -100,22 +105,31 @@
             android:id="@+id/max_temmperature"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@+id/wind_speed"
+            android:textColor="@color/red"
+            android:textSize="@dimen/_14ssp"
+            app:layout_constraintBottom_toTopOf="@+id/gl_seventyfive_hor"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintLeft_toRightOf="@id/gl_fifty_vert"
+            app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintStart_toEndOf="@id/gl_fifty_vert"
-            app:layout_constraintTop_toBottomOf="@id/feel_temperature"
+            app:layout_constraintTop_toBottomOf="@id/min_temmperature"
             tools:text="max 22 °C" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_seventyfive_hor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.75" />
 
         <TextView
             android:id="@+id/wind_speed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@id/sunrise"
+            app:layout_constraintBottom_toTopOf="@id/rain_three_hours"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/max_temmperature"
+            app:layout_constraintTop_toBottomOf="@id/gl_seventyfive_hor"
             tools:text="vitesse vent" />
 
         <TextView
@@ -131,7 +145,7 @@
             android:id="@+id/snow_three_hours"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@id/sunset"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             tools:text="XX mm" />
@@ -140,10 +154,8 @@
             android:id="@+id/sunrise"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/gl_fifty_vert"
+            app:layout_constraintBottom_toTopOf="@id/sunset"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@id/gl_fifty_vert"
             app:layout_constraintStart_toStartOf="parent"
             tools:text="sunrise" />
 
@@ -152,10 +164,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/sunrise"
-            app:layout_constraintLeft_toRightOf="@id/sunrise"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             tools:text="sunset" />
 
 

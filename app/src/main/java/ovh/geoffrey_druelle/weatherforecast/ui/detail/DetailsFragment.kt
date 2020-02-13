@@ -2,6 +2,7 @@ package ovh.geoffrey_druelle.weatherforecast.ui.detail
 
 import android.app.Dialog
 import android.content.DialogInterface
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
@@ -64,18 +65,21 @@ class DetailsFragment : DialogFragment() {
         val view = activity!!.layoutInflater.inflate(R.layout.details_fragment, null)
         customView = view
 
-//        Picasso.get().load(forecast.cover).resize(400,500).onlyScaleDown().into(view.imageview_cover)
-//        view.textview_price.text = String.format(resources.getString(R.string.price_in_euros), book.price)
-//        view.textview_summary.text = TextUtils.join("\n\n", forecast.synopsis)
         view.weather_icon.setImageResource(getIcon(forecast.weatherId, forecast.weatherIcon))
         view.weather_desc.text = getMainDescription(forecast.weatherId)
         view.temperature.text = String.format("%.2f °C", forecast.temp)
         view.feel_temperature.text = String.format("Felt : %.2f °C", forecast.feelsLike)
         view.max_temmperature.text = String.format("Max : %.2f °C", forecast.tempMax)
         view.min_temmperature.text = String.format("Min : %.2f °C", forecast.tempMin)
-        if (forecast.temp >= 15.0) view.hot_or_cold.text = "Hot"
-        else view.hot_or_cold.text = "Cold"
-        view.wind_speed.text = String.format("%.2f km/h", forecast.speedWind)
+        if (forecast.temp >= 15.0) {
+            view.hot_or_cold.text = "Hot"
+            view.hot_or_cold.setTextColor(Color.RED)
+        }
+        else {
+            view.hot_or_cold.text = "Cold"
+            view.hot_or_cold.setTextColor(Color.CYAN)
+        }
+        view.wind_speed.text = String.format("Wind : %.2f km/h", forecast.speedWind)
         view.rain_three_hours.text =
             String.format("Rain : %.2f mm", forecast.volumeRainLastThreeHours)
         view.snow_three_hours.text =

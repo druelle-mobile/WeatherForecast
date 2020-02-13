@@ -19,60 +19,64 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/_6sdp"
-        app:contentPaddingBottom="@dimen/_8sdp"
-        app:contentPaddingTop="@dimen/_8sdp"
         android:elevation="@dimen/_4sdp"
-        app:cardCornerRadius="24dp">
+        app:cardCornerRadius="24dp"
+        app:contentPaddingBottom="@dimen/_8sdp"
+        app:contentPaddingTop="@dimen/_8sdp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/day"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/_20ssp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="Lundi" />
-
             <ImageView
                 android:id="@+id/weather_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintEnd_toStartOf="@id/day"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/gl_thirtyfive_vert"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toLeftOf="@id/day"
+                app:layout_constraintRight_toLeftOf="@id/gl_thirtyfive_vert"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/gl_thirtyfive_vert"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.35" />
+
+            <TextView
+                android:id="@+id/day"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_16sdp"
+                android:textSize="@dimen/_20ssp"
+                app:layout_constraintLeft_toRightOf="@id/gl_thirtyfive_vert"
+                app:layout_constraintStart_toEndOf="@id/gl_thirtyfive_vert"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+                tools:text="Lundi" />
 
             <TextView
                 android:id="@+id/weather_desc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_16sdp"
                 android:textSize="@dimen/_16ssp"
-                app:layout_constraintTop_toBottomOf="@id/day"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toTopOf="@id/temperature"
-                tools:text="description"/>
+                app:layout_constraintLeft_toRightOf="@id/gl_thirtyfive_vert"
+                app:layout_constraintStart_toEndOf="@id/gl_thirtyfive_vert"
+                app:layout_constraintTop_toBottomOf="@id/day"
+                tools:text="description" />
 
             <TextView
                 android:id="@+id/temperature"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_16sdp"
                 android:textSize="@dimen/_20ssp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/gl_thirtyfive_vert"
+                app:layout_constraintStart_toEndOf="@id/gl_thirtyfive_vert"
                 app:layout_constraintTop_toBottomOf="@id/weather_desc"
                 tools:text="20°C" />
 

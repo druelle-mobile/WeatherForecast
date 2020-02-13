@@ -42,4 +42,10 @@ class ForecastRepository(app: Application) : CoroutineScope {
     fun getForecastList(): LiveData<List<ForecastEntity>> {
         return forecastDao.getAll()
     }
+
+    suspend fun getForecastCityId(): Long {
+        return withContext(Dispatchers.IO) {
+            forecastDao.getForecastCityId()
+        }
+    }
 }

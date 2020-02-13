@@ -8,7 +8,6 @@ import kotlinx.coroutines.*
 import ovh.geoffrey_druelle.weatherforecast.WeatherForecastApplication.Companion.appContext
 import ovh.geoffrey_druelle.weatherforecast.WeatherForecastApplication.Companion.instance
 import ovh.geoffrey_druelle.weatherforecast.core.BaseViewModel
-import ovh.geoffrey_druelle.weatherforecast.data.local.model.CitiesListItemEntity
 import ovh.geoffrey_druelle.weatherforecast.data.remote.api.CitiesListApi
 import ovh.geoffrey_druelle.weatherforecast.data.remote.api.OpenWeatherMapApi
 import ovh.geoffrey_druelle.weatherforecast.data.remote.model.cities.CitiesListItem
@@ -17,6 +16,7 @@ import ovh.geoffrey_druelle.weatherforecast.data.repository.CitiesListItemReposi
 import ovh.geoffrey_druelle.weatherforecast.data.repository.CityRepository
 import ovh.geoffrey_druelle.weatherforecast.data.repository.ForecastRepository
 import ovh.geoffrey_druelle.weatherforecast.utils.cleanForecastDatabase
+import ovh.geoffrey_druelle.weatherforecast.utils.createCitiesListObject
 import ovh.geoffrey_druelle.weatherforecast.utils.createCityObject
 import ovh.geoffrey_druelle.weatherforecast.utils.createForecastObject
 import ovh.geoffrey_druelle.weatherforecast.utils.helper.ConnectivityHelper.isConnectedToNetwork
@@ -77,7 +77,6 @@ class SplashScreenViewModel(
         }
 
         checkCitiesListDatas(bool)
-//        downloadForecastDatas(bool)
     }
 
     private fun checkCitiesListDatas(bool: Boolean) {
@@ -105,24 +104,6 @@ class SplashScreenViewModel(
             else -> _noDataNoConnection.postValue(true)
         }
     }
-
-//    private fun downloadForecastDatas(bool: Boolean) {
-//        val forecastCount = runBlocking {
-//            forecastRepository.countForecastEntries()
-//        }
-//        val citiesListCount = runBlocking {
-//            citiesListRepository.getLength()
-//        }
-//        when {
-//            bool && citiesListCount != 0 -> launchRequestForForecastDatas()
-//            bool && citiesListCount == 0 -> {
-//                launchRequestForForecastDatas()
-//                launchRequestForCitiesList()
-//            }
-//            forecastCount != 0 && citiesListCount != 0 -> _navToHome.postValue(true)
-//            else -> _noDataNoConnection.postValue(true)
-//        }
-//    }
 
     private fun launchRequestForCitiesList(bool: Boolean) {
         val call: Call<JsonArray> = cityApi.readJson()
@@ -186,14 +167,6 @@ class SplashScreenViewModel(
             citiesListRepository.deleteContinents()
             checkForecastDatas(bool)
         }
-    }
-
-    private fun createCitiesListObject(item: CitiesListItem): CitiesListItemEntity {
-        val citiesListItem = CitiesListItemEntity()
-        citiesListItem.id = item.id
-        citiesListItem.name = item.name
-        citiesListItem.country = item.country
-        return citiesListItem
     }
 
     private fun launchRequestForForecastDatas() {

@@ -63,7 +63,7 @@ class ForecastListFragment : BaseFragment<ForecastListFragmentBinding>() {
     private fun initOtherObs() {
         viewModel.liveCityId.obs(this) { value ->
             Timber.d("liveCityId = $value")
-            viewModel.requestNewForecastDatas(value)
+            viewModel.checkForNewForecastRequest(value)
         }
     }
 

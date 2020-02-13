@@ -17,4 +17,7 @@ interface ForecastDao : BaseDao<ForecastEntity> {
 
     @Query("DELETE FROM ForecastEntity")
     fun deleteAll()
+
+    @Query("SELECT cityId FROM ForecastEntity LIMIT 1")
+    fun getForecastCityId(): Long
 }

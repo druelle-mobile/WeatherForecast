@@ -9,9 +9,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import ovh.geoffrey_druelle.weatherforecast.R
-import ovh.geoffrey_druelle.weatherforecast.WeatherForecastApplication.Companion.instance
 import ovh.geoffrey_druelle.weatherforecast.data.local.model.ForecastEntity
-import ovh.geoffrey_druelle.weatherforecast.data.repository.ForecastRepository
 import ovh.geoffrey_druelle.weatherforecast.databinding.ForecastListItemBinding
 import ovh.geoffrey_druelle.weatherforecast.ui.detail.DetailsFragment
 import ovh.geoffrey_druelle.weatherforecast.ui.forecast.ForecastListViewModel
@@ -24,7 +22,7 @@ import kotlin.coroutines.CoroutineContext
 
 
 class ForecastListAdapter(
-    var forecastList: List<ForecastEntity> = listOf(),
+    var forecastList: MutableList<ForecastEntity> = mutableListOf(),
     private val forecastListViewModel: ForecastListViewModel
 ) : RecyclerView.Adapter<ForecastListAdapter.ForecastViewHolder>(), CoroutineScope {
 
@@ -32,8 +30,6 @@ class ForecastListAdapter(
         get() = Dispatchers.Main + job
 
     private var job: Job = Job()
-
-    private var repo = ForecastRepository(instance)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ForecastViewHolder {
         return ForecastViewHolder(
@@ -77,5 +73,13 @@ class ForecastListAdapter(
     override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
         job.cancel()
         super.onDetachedFromRecyclerView(recyclerView)
+    }
+
+    fun clear() {
+        val size = forecastList.size
+        if (size > 0) {
+            for (i in 0 until size) forecastList.removeAt(0)
+            notifyItemRangeRemoved(0, size)
+        }
     }
 }

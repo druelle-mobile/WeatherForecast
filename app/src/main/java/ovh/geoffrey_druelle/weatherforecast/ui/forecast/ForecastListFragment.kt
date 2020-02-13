@@ -15,11 +15,19 @@ import ovh.geoffrey_druelle.weatherforecast.core.BaseFragment
 import ovh.geoffrey_druelle.weatherforecast.databinding.ForecastListFragmentBinding
 import ovh.geoffrey_druelle.weatherforecast.ui.main.MainActivity
 import ovh.geoffrey_druelle.weatherforecast.utils.extension.obs
+import timber.log.Timber
 
 class ForecastListFragment : BaseFragment<ForecastListFragmentBinding>() {
 
     companion object {
-        fun newInstance() = ForecastListFragment()
+//        fun setCityIdAsSharedPreference(cityId: Long) {
+////            Toast.makeText(appContext, "LOL", Toast.LENGTH_SHORT).show()
+//
+//
+//
+//            val cityIdPref : SharedPreferences()
+//            cityIdPref.edit(
+//        }
     }
 
     @LayoutRes
@@ -40,9 +48,23 @@ class ForecastListFragment : BaseFragment<ForecastListFragmentBinding>() {
         binding.lifecycleOwner = viewLifecycleOwner
 
         initListObs()
+
         implementBackCallback()
 
         return root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        initOtherObs()
+    }
+
+    private fun initOtherObs() {
+        viewModel.liveCityId.obs(this) { value ->
+            Timber.d("liveCityId = $value")
+            viewModel.requestNewForecastDatas(value)
+        }
     }
 
     private fun initListObs() {
@@ -53,9 +75,9 @@ class ForecastListFragment : BaseFragment<ForecastListFragmentBinding>() {
 
     private fun initCityObs() {
         viewModel.initCityLiveData()
-        viewModel.city.obs(this) {
+        viewModel.city?.obs(this) {
             val title =
-                String.format("%s, %s", viewModel.city.value?.name, viewModel.city.value?.country)
+                String.format("%s, %s", viewModel.city?.value?.name, viewModel.city?.value?.country)
             (activity as MainActivity).viewModel.appBarTitle.set(title)
         }
     }
@@ -73,9 +95,15 @@ class ForecastListFragment : BaseFragment<ForecastListFragmentBinding>() {
     private fun quitApp() {
         if (exit) MainActivity.instance.finish()
         else {
-            Toast.makeText(WeatherForecastApplication.appContext, getString(R.string.press_back), Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                WeatherForecastApplication.appContext,
+                getString(R.string.press_back),
+                Toast.LENGTH_SHORT
+            ).show()
             exit = true
             Handler().postDelayed({ exit = false }, 3000)
         }
     }
 }
+
+

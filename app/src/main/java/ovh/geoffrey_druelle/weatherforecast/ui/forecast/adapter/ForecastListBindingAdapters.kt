@@ -14,13 +14,13 @@ fun setRecyclerViewSource(
     recyclerView.adapter?.run {
         if (this is ForecastListAdapter) {
             if (list != null) {
-                this.forecastList = list
+                this.forecastList = list as MutableList<ForecastEntity>
             }
             this.notifyDataSetChanged()
         }
     } ?: run {
         list?.let {
-            ForecastListAdapter(it, viewModel).apply {
+            ForecastListAdapter(it as MutableList<ForecastEntity>, viewModel).apply {
                 recyclerView.adapter = this
             }
         }

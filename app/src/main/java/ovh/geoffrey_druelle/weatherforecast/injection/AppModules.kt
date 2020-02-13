@@ -39,7 +39,7 @@ val appModules = module {
     // ViewModels modules part
     viewModel { MainActivityViewModel() }
     viewModel { SplashScreenViewModel(owmApi = get(named("owm_api")), cityApi = get(named("cities_api"))) }
-    viewModel { ForecastListViewModel() }
+    viewModel { ForecastListViewModel(api = get(named("owm_api"))) }
 
     // Provider module part
 }

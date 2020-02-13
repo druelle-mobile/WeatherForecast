@@ -31,4 +31,7 @@ interface CitiesListItemDao : BaseDao<CitiesListItemEntity> {
     fun deleteOceania()
     @Query("DELETE FROM CitiesListItemEntity WHERE id = 6255152")
     fun deleteAntartica()
+
+    @Query("SELECT id FROM CitiesListItemEntity WHERE name = :city AND country = :country")
+    fun getCityIdFromNameAndCountry(city: String, country: String): Long
 }

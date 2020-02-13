@@ -50,4 +50,10 @@ class CitiesListItemRepository(app: Application) : CoroutineScope {
             citiesListItemDao.deleteAntartica()
         }
     }
+
+    suspend fun getCityIdFromNameAndCountry(city: String, country: String): Long {
+        return withContext(Dispatchers.IO) {
+            citiesListItemDao.getCityIdFromNameAndCountry(city, country)
+        }
+    }
 }

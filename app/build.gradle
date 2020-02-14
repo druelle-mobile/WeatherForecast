@@ -108,6 +108,8 @@ dependencies {
     testImplementation deps.koin.test
     testImplementation deps.junit.junit
     testImplementation deps.robolectric
+    testImplementation deps.core_testing
     androidTestImplementation deps.junit.xjunit
     androidTestImplementation deps.espresso.core
+    androidTestImplementation deps.test_runner
 }

@@ -26,7 +26,7 @@ import ovh.geoffrey_druelle.weatherforecast.utils.DB_NAME
 )
 abstract class WeatherForecastDatabase : RoomDatabase() {
     abstract fun cityDao(): CityDao
-    abstract fun citiesListDao(): CitiesListItemDao
+    abstract fun citiesListItemDao(): CitiesListItemDao
     abstract fun forecastDao(): ForecastDao
 
     companion object {

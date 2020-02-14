@@ -19,7 +19,7 @@ class CitiesListItemRepository(app: Application) : CoroutineScope {
 
     init {
         val db = WeatherForecastDatabase.getInstance(app)
-        citiesListItemDao = db.citiesListDao()
+        citiesListItemDao = db.citiesListItemDao()
     }
 
     suspend fun insert(citiesListItem: CitiesListItemEntity) {

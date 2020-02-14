@@ -47,6 +47,8 @@ versions.junit = '4.12'
 versions.xjunit = '1.1.1'
 versions.espresso = '3.3.0-alpha03'
 versions.robolectric = '4.3.1'
+versions.test_runner = '1.2.0'
+versions.core_testing = '2.1.0'
 
 
 // Define dependencies packages.
@@ -124,6 +126,8 @@ deps.sdp = "com.intuit.sdp:sdp-android:$versions.sdp"
 deps.ssp = "com.intuit.ssp:ssp-android:$versions.ssp"
 deps.junit = junit
 deps.espresso = espresso
+deps.test_runner = "androidx.test:runner:$versions.test_runner"
+deps.core_testing = "androidx.arch.core:core-testing:$versions.core_testing"
 deps.robolectric = "org.robolectric:robolectric:$versions.robolectric"
 
 // Define the external variables

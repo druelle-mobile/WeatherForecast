@@ -24,7 +24,7 @@ val appModules = module {
     // Database modules part
     single { WeatherForecastDatabase.getInstance(androidApplication()) }
     single { get<WeatherForecastDatabase>().cityDao() }
-    single { get<WeatherForecastDatabase>().citiesListDao() }
+    single { get<WeatherForecastDatabase>().citiesListItemDao() }
     single { get<WeatherForecastDatabase>().forecastDao() }
 
     // Network modules part

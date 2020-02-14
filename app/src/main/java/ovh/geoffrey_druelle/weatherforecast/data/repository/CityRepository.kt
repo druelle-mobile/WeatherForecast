@@ -21,6 +21,12 @@ class CityRepository(app: Application) : CoroutineScope {
         cityDao = db.cityDao()
     }
 
+    suspend fun countEntries(): Int {
+        return withContext(Dispatchers.IO) {
+            cityDao.countEntries()
+        }
+    }
+
     suspend fun deleteAll() {
         withContext(Dispatchers.IO) {
             cityDao.deleteAll()

@@ -16,11 +16,7 @@ import ovh.geoffrey_druelle.weatherforecast.WeatherForecastApplication
 import ovh.geoffrey_druelle.weatherforecast.data.local.model.CityEntity
 import ovh.geoffrey_druelle.weatherforecast.data.local.model.ForecastEntity
 import ovh.geoffrey_druelle.weatherforecast.data.repository.CityRepository
-import ovh.geoffrey_druelle.weatherforecast.data.repository.ForecastRepository
-import ovh.geoffrey_druelle.weatherforecast.utils.helper.getDay
-import ovh.geoffrey_druelle.weatherforecast.utils.helper.getDayAndHours
-import ovh.geoffrey_druelle.weatherforecast.utils.helper.getIcon
-import ovh.geoffrey_druelle.weatherforecast.utils.helper.getMainDescription
+import ovh.geoffrey_druelle.weatherforecast.utils.helper.*
 
 class DetailsFragment : DialogFragment() {
 
@@ -100,10 +96,11 @@ class DetailsFragment : DialogFragment() {
 
     private fun setTitle(): String {
         val dayOfWeak = getDay(forecast.dt)
+        val hour = getHour(forecast.dt_txt)
         val city = runBlocking { cityRepository.getCity(forecast.cityId) }
         val cityName = city.name
         val cityCountry = city.country
-        return String.format(getString(R.string.day_city_country_s), dayOfWeak, cityName, cityCountry)
+        return String.format(getString(R.string.day_hour_city_country_s), dayOfWeak, hour, cityName, cityCountry)
     }
 
     override fun onStart() {

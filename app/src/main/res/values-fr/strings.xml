@@ -28,7 +28,7 @@
     <string name="snow_s">Neige : %.2f mm</string>
     <string name="sunrise_s">Lever de soleil : %s</string>
     <string name="sunset_s">Coucher de soleil : %s</string>
-    <string name="day_city_country_s">%s - %s, %s</string>
+    <string name="day_hour_city_country_s">%s - %s - %s, %s</string>
     <string name="city_country_s">%s, %s</string>
     <string name="paris_fr">Paris, FR</string>
 

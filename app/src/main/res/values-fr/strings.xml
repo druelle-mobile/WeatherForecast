@@ -1,0 +1,73 @@
+<resources>
+    <!--    App infos   -->
+    <string name="app_version">Version %s</string>
+
+    <!--    Permissions     -->
+    <string name="rationale_example">Cette application a besoin d\'accéder à la location pour proposer la meilleure expérience.</string>
+    <string name="yes">Oui</string>
+    <string name="no">Non</string>
+    <string name="returned_from_settings">Retour des réglages de l\'application avec les permissions suivantes : Localisation: %s</string>
+
+    <!--    Quit    -->
+    <string name="quit">Quitter</string>
+    <string name="press_back">Pressez Retour une nouvelle fois pour quitter.</string>
+
+    <!--    Images  -->
+    <string name="weather_icon_desc">Icone du temps pour la prévision</string>
+    <string name="sun_icon_for_splash_screen">Icone de soleil pour l\'écran de présentation</string>
+
+    <!--    Forecast strings and completable strings    -->
+    <string name="temp_s">%.2f °C</string>
+    <string name="felt_temp_s">Ressenti : %.2f °C</string>
+    <string name="max_temp_s">Max : %.2f °C</string>
+    <string name="min_temp_s">Min : %.2f °C</string>
+    <string name="hot">Chaud</string>
+    <string name="cold">Froid</string>
+    <string name="wind_s">Vent : %.2f km/h</string>
+    <string name="rain_s">Pluie : %.2f mm</string>
+    <string name="snow_s">Neige : %.2f mm</string>
+    <string name="sunrise_s">Lever de soleil : %s</string>
+    <string name="sunset_s">Coucher de soleil : %s</string>
+    <string name="day_city_country_s">%s - %s, %s</string>
+    <string name="city_country_s">%s, %s</string>
+    <string name="paris_fr">Paris, FR</string>
+
+    <!--    API strings     -->
+    <string name="metric_unit">metric</string>
+    <string name="paris">Paris</string>
+
+    <!--    SnackBar messages   -->
+    <string name="net_error">Erreur réseau. Continuer ?</string>
+    <string name="no_data_no_internet">Pas d\'internet.</string>
+
+    <!--    Days    -->
+    <string name="monday">LUNDI</string>
+    <string name="tuesday">MARDI</string>
+    <string name="wednesday">MERCREDI</string>
+    <string name="thursday">JEUDI</string>
+    <string name="friday">VENDREDI</string>
+    <string name="saturday">SAMEDI</string>
+    <string name="sunday">DIMANCHE</string>
+    <string name="error">ERREUR</string>
+
+    <!--    Weather     -->
+    <string name="thunderstorm">Orage</string>
+    <string name="drizzle">Bruine</string>
+    <string name="rain">Pluie</string>
+    <string name="snow">Neige</string>
+    <string name="mist">Brouillard</string>
+    <string name="smoke">Fumée</string>
+    <string name="haze">Brume</string>
+    <string name="dust">Poussière</string>
+    <string name="fog">Brouillard</string>
+    <string name="sand">Sable</string>
+    <string name="ash">Cendre</string>
+    <string name="squall">Bourrasque</string>
+    <string name="tornado">Tornade</string>
+    <string name="clear">Clair</string>
+    <string name="clouds">Nuages</string>
+    <string name="nc">NC</string>
+
+    <!--    AppBar     -->
+    <string name="search_city">Rechercher une ville</string>
+</resources>

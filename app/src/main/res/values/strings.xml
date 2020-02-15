@@ -1,22 +1,22 @@
 <resources>
-<!--    App infos   -->
+    <!--    App infos   -->
     <string name="app_version">Version %s</string>
 
-<!--    Permissions     -->
-    <string name="rationale_example">This app needs access to … to propose the best experience.</string>
+    <!--    Permissions     -->
+    <string name="rationale_example">This app needs access to location to propose the best experience.</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
-    <string name="returned_from_settings">Returned from settings to the application with the following permissions : \\…: %s</string>
+    <string name="returned_from_settings">Returned from settings to the application with the following permissions : Location : %s</string>
 
-<!--    Quit    -->
+    <!--    Quit    -->
     <string name="quit">Quit</string>
     <string name="press_back">Press Back again to exit.</string>
 
-<!--    Images  -->
+    <!--    Images  -->
     <string name="weather_icon_desc">Weather icon of forecast item</string>
     <string name="sun_icon_for_splash_screen">Sun icon for splash screen</string>
 
-<!--    Forecast strings and completable strings    -->
+    <!--    Forecast strings and completable strings    -->
     <string name="temp_s">%.2f °C</string>
     <string name="felt_temp_s">Felt : %.2f °C</string>
     <string name="max_temp_s">Max : %.2f °C</string>
@@ -32,15 +32,15 @@
     <string name="city_country_s">%s, %s</string>
     <string name="paris_fr">Paris, FR</string>
 
-<!--    API strings     -->
+    <!--    API strings     -->
     <string name="metric_unit">metric</string>
     <string name="paris">Paris</string>
 
-<!--    SnackBar messages   -->
+    <!--    SnackBar messages   -->
     <string name="net_error">Network error. Continue ?</string>
     <string name="no_data_no_internet">No data and no internet.</string>
 
-<!--    Days    -->
+    <!--    Days    -->
     <string name="monday">MONDAY</string>
     <string name="tuesday">TUESDAY</string>
     <string name="wednesday">WEDNESDAY</string>
@@ -50,7 +50,7 @@
     <string name="sunday">SUNDAY</string>
     <string name="error">ERROR</string>
 
-<!--    Weather     -->
+    <!--    Weather     -->
     <string name="thunderstorm">Thunderstorm</string>
     <string name="drizzle">Drizzle</string>
     <string name="rain">Rain</string>
@@ -67,5 +67,7 @@
     <string name="clear">Clear</string>
     <string name="clouds">Clouds</string>
     <string name="nc">NC</string>
+
+    <!--    AppBar     -->
     <string name="search_city">Search city</string>
 </resources>

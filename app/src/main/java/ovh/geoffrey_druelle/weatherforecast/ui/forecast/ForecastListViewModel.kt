@@ -68,7 +68,7 @@ class ForecastListViewModel(private val api: OpenWeatherMapApi) : BaseViewModel(
         }
     }
 
-    private fun requestNewForecastDatas(cityId: Long) {
+    fun requestNewForecastDatas(cityId: Long) {
         val call: Call<Forecast> = api.getDatasFromCityId(cityId, appContext.getString(R.string.metric_unit))
         Timber.i("Call : %s", call.toString())
         call.enqueue(object : Callback<Forecast> {

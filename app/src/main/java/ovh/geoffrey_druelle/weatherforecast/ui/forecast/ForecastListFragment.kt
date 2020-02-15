@@ -25,6 +25,7 @@ class ForecastListFragment : BaseFragment<ForecastListFragmentBinding>() {
     private lateinit var viewModel: ForecastListViewModel
 
     private var exit: Boolean = false
+    private var swipeCount = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,7 +38,7 @@ class ForecastListFragment : BaseFragment<ForecastListFragmentBinding>() {
         binding.lifecycleOwner = viewLifecycleOwner
 
         initListObs()
-
+        setSwipeRefreshLayout()
         implementBackCallback()
 
         return root
@@ -47,6 +48,16 @@ class ForecastListFragment : BaseFragment<ForecastListFragmentBinding>() {
         super.onViewCreated(view, savedInstanceState)
 
         initOtherObs()
+    }
+
+    private fun setSwipeRefreshLayout() {
+        binding.swipeRefresh.setOnRefreshListener {
+            swipeCount += 1
+            if (swipeCount > 0)
+                viewModel.requestNewForecastDatas(viewModel.liveCityId.value!!)
+            binding.recyclerView.adapter?.notifyDataSetChanged()
+            binding.swipeRefresh.isRefreshing = false
+        }
     }
 
     private fun initOtherObs() {

@@ -55,6 +55,7 @@ dependencies {
     implementation deps.support.material
     implementation deps.support.constraint
     implementation deps.support.gson
+    implementation deps.support.swipe
 
     // Kotlin
     implementation deps.kotlin.stdlib

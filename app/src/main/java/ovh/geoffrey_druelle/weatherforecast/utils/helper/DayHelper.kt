@@ -45,9 +45,9 @@ private fun getDayOfWeek(dt: Long): Int {
     return calendar.get(Calendar.DAY_OF_WEEK)
 }
 
-fun getDayAndHours(time: Long): String {
+fun getHoursMinutesSeconds(time: Long): String {
     val date = Date(time * 1000)
-    val simpleDateFormatError =  SimpleDateFormat("dd/MM/yyyy HH:mm:ss")
+    val simpleDateFormatError =  SimpleDateFormat("HH:mm:ss")
 
     return simpleDateFormatError.format(date)
 }

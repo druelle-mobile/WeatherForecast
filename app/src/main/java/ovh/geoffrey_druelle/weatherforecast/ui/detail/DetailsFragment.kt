@@ -80,8 +80,8 @@ class DetailsFragment : DialogFragment() {
             String.format(getString(R.string.snow_s), forecast.volumeSnowLastThreeHours)
 
         val city: CityEntity = runBlocking { cityRepository.getCity(forecast.cityId) }
-        view.sunrise.text = String.format(getString(R.string.sunrise_s), getDayAndHours(city.sunrise))
-        view.sunset.text = String.format(getString(R.string.sunset_s), getDayAndHours(city.sunset))
+        view.sunrise.text = String.format(getString(R.string.sunrise_s), getHoursMinutesSeconds(city.sunrise))
+        view.sunset.text = String.format(getString(R.string.sunset_s), getHoursMinutesSeconds(city.sunset))
 
 
         val builder = AlertDialog.Builder(context!!)

@@ -1,6 +1,7 @@
 package ovh.geoffrey_druelle.weatherforecast.utils.helper
 
 import ovh.geoffrey_druelle.weatherforecast.R
+import ovh.geoffrey_druelle.weatherforecast.WeatherForecastApplication.Companion.appContext
 
 // This class is here to help by getting the right icon
 // depending on id and ico of the "weather" JSON object
@@ -9,9 +10,11 @@ import ovh.geoffrey_druelle.weatherforecast.R
 //open class WeatherHelper {
 
 
+
 fun getIcon(id: Int, icon: String): Int {
     var isDay = false
-    if (icon.contains("d")) isDay == true
+
+    if (icon.contains("d")) isDay = true
 
     return when (id) {
         in 200..232 -> {
@@ -64,30 +67,22 @@ fun getIcon(id: Int, icon: String): Int {
 
 fun getMainDescription(id: Int): String {
     return when (id) {
-        in 200..232 -> {
-            "Thunderstorm"
-        }
-        in 300..321 -> {
-            "Drizzle"
-        }
-        in 500..531 -> {
-            "Rain"
-        }
-        in 600..622 -> {
-            "Snow"
-        }
-        701 -> "Mist"
-        711 -> "Smoke"
-        721 -> "Haze"
-        731, 761 -> "Dust"
-        741 -> "Fog"
-        751 -> "Sand"
-        762 -> "Ash"
-        771 -> "Squall"
-        781 -> "Tornado"
-        800 -> "Clear"
-        in 801..804 -> "Clouds"
-        else -> "NC"
+        in 200..232 -> appContext.getString(R.string.thunderstorm)
+        in 300..321 -> appContext.getString(R.string.drizzle)
+        in 500..531 -> appContext.getString(R.string.rain)
+        in 600..622 -> appContext.getString(R.string.snow)
+        701 -> appContext.getString(R.string.mist)
+        711 -> appContext.getString(R.string.smoke)
+        721 -> appContext.getString(R.string.haze)
+        731, 761 -> appContext.getString(R.string.dust)
+        741 -> appContext.getString(R.string.fog)
+        751 -> appContext.getString(R.string.sand)
+        762 -> appContext.getString(R.string.ash)
+        771 -> appContext.getString(R.string.squall)
+        781 -> appContext.getString(R.string.tornado)
+        800 -> appContext.getString(R.string.clear)
+        in 801..804 -> appContext.getString(R.string.clouds)
+        else -> appContext.getString(R.string.nc)
     }
 }
 //}

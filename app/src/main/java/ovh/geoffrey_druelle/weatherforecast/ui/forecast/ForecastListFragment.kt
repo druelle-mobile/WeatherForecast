@@ -19,23 +19,13 @@ import timber.log.Timber
 
 class ForecastListFragment : BaseFragment<ForecastListFragmentBinding>() {
 
-    companion object {
-//        fun setCityIdAsSharedPreference(cityId: Long) {
-////            Toast.makeText(appContext, "LOL", Toast.LENGTH_SHORT).show()
-//
-//
-//
-//            val cityIdPref : SharedPreferences()
-//            cityIdPref.edit(
-//        }
-    }
-
     @LayoutRes
     override fun getLayoutResId(): Int = R.layout.forecast_list_fragment
 
     private lateinit var viewModel: ForecastListViewModel
 
     private var exit: Boolean = false
+    private var swipeCount = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,7 +38,7 @@ class ForecastListFragment : BaseFragment<ForecastListFragmentBinding>() {
         binding.lifecycleOwner = viewLifecycleOwner
 
         initListObs()
-
+        setSwipeRefreshLayout()
         implementBackCallback()
 
         return root
@@ -58,6 +48,16 @@ class ForecastListFragment : BaseFragment<ForecastListFragmentBinding>() {
         super.onViewCreated(view, savedInstanceState)
 
         initOtherObs()
+    }
+
+    private fun setSwipeRefreshLayout() {
+        binding.swipeRefresh.setOnRefreshListener {
+            swipeCount += 1
+            if (swipeCount > 0)
+                viewModel.requestNewForecastDatas(viewModel.liveCityId.value!!)
+            binding.recyclerView.adapter?.notifyDataSetChanged()
+            binding.swipeRefresh.isRefreshing = false
+        }
     }
 
     private fun initOtherObs() {
@@ -77,7 +77,7 @@ class ForecastListFragment : BaseFragment<ForecastListFragmentBinding>() {
         viewModel.initCityLiveData()
         viewModel.city?.obs(this) {
             val title =
-                String.format("%s, %s", viewModel.city?.value?.name, viewModel.city?.value?.country)
+                String.format(getString(R.string.city_country_s), viewModel.city?.value?.name, viewModel.city?.value?.country)
             (activity as MainActivity).viewModel.appBarTitle.set(title)
         }
     }

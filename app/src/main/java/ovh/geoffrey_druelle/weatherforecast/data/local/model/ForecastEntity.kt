@@ -1,6 +1,5 @@
 package ovh.geoffrey_druelle.weatherforecast.data.local.model
 
-import android.os.Parcel
 import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.ForeignKey

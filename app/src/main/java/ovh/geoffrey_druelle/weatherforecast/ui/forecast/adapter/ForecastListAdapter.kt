@@ -9,15 +9,13 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import ovh.geoffrey_druelle.weatherforecast.R
+import ovh.geoffrey_druelle.weatherforecast.WeatherForecastApplication.Companion.appContext
 import ovh.geoffrey_druelle.weatherforecast.data.local.model.ForecastEntity
 import ovh.geoffrey_druelle.weatherforecast.databinding.ForecastListItemBinding
 import ovh.geoffrey_druelle.weatherforecast.ui.detail.DetailsFragment
 import ovh.geoffrey_druelle.weatherforecast.ui.forecast.ForecastListViewModel
 import ovh.geoffrey_druelle.weatherforecast.ui.main.MainActivity
-import ovh.geoffrey_druelle.weatherforecast.utils.helper.attributeColorToDay
-import ovh.geoffrey_druelle.weatherforecast.utils.helper.getDay
-import ovh.geoffrey_druelle.weatherforecast.utils.helper.getIcon
-import ovh.geoffrey_druelle.weatherforecast.utils.helper.getMainDescription
+import ovh.geoffrey_druelle.weatherforecast.utils.helper.*
 import kotlin.coroutines.CoroutineContext
 
 
@@ -52,9 +50,9 @@ class ForecastListAdapter(
         holder.binding.weatherDesc.text = getMainDescription(forecast.weatherId)
 
         holder.binding.day.text = getDay(forecast.dt)
+        holder.binding.hour.text = getHour(forecast.dt_txt)
         holder.binding.forecastCard.setBackgroundColor(attributeColorToDay(forecast.dt))
-
-        holder.binding.temperature.text = String.format("%s °C", forecast.temp)
+        holder.binding.temperature.text = String.format(appContext.getString(R.string.temp_s), forecast.temp)
 
         holder.binding.forecastCard.setOnClickListener {
             openDetails(forecast)
@@ -75,11 +73,4 @@ class ForecastListAdapter(
         super.onDetachedFromRecyclerView(recyclerView)
     }
 
-    fun clear() {
-        val size = forecastList.size
-        if (size > 0) {
-            for (i in 0 until size) forecastList.removeAt(0)
-            notifyItemRangeRemoved(0, size)
-        }
-    }
 }

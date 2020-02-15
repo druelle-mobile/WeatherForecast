@@ -12,6 +12,7 @@ versions.preference = '1.1.0'
 versions.material = '1.2.0-alpha04'
 versions.constraint_layout = '2.0.0-beta4'
 versions.gson = '2.8.6'
+versions.swipe = '1.1.0-alpha03'
 // Kotlin
 versions.kotlin = '1.3.61'
 versions.coroutines = '1.3.3'
@@ -63,6 +64,7 @@ support.preference = "androidx.preference:preference:$versions.preference"
 support.material = "com.google.android.material:material:$versions.material"
 support.constraint = "androidx.constraintlayout:constraintlayout:$versions.constraint_layout"
 support.gson = "com.google.code.gson:gson:$versions.gson"
+support.swipe = "androidx.swiperefreshlayout:swiperefreshlayout:$versions.swipe"
 // Kotlin
 def kotlin = [:]
 kotlin.plugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin"

@@ -1,12 +1,73 @@
 <resources>
-    <string name="generic_text">Generic text</string>
-    <string name="generic_number">1234</string>
+    <!--    App infos   -->
     <string name="app_version">Version %s</string>
 
-    <string name="rationale_example">This app needs access to … to propose the best experience.</string>
+    <!--    Permissions     -->
+    <string name="rationale_example">This app needs access to location to propose the best experience.</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
-    <string name="returned_from_settings">Returned from settings to the application with the following permissions : \\…: %s</string>
+    <string name="returned_from_settings">Returned from settings to the application with the following permissions : Location : %s</string>
+
+    <!--    Quit    -->
     <string name="quit">Quit</string>
     <string name="press_back">Press Back again to exit.</string>
+
+    <!--    Images  -->
+    <string name="weather_icon_desc">Weather icon of forecast item</string>
+    <string name="sun_icon_for_splash_screen">Sun icon for splash screen</string>
+
+    <!--    Forecast strings and completable strings    -->
+    <string name="temp_s">%.2f °C</string>
+    <string name="felt_temp_s">Felt : %.2f °C</string>
+    <string name="max_temp_s">Max : %.2f °C</string>
+    <string name="min_temp_s">Min : %.2f °C</string>
+    <string name="hot">Hot</string>
+    <string name="cold">Cold</string>
+    <string name="wind_s">Wind : %.2f km/h</string>
+    <string name="rain_s">Rain : %.2f mm</string>
+    <string name="snow_s">Snow : %.2f mm</string>
+    <string name="sunrise_s">Sunrise : %s</string>
+    <string name="sunset_s">Sunset : %s</string>
+    <string name="day_hour_city_country_s">%s - %s - %s, %s</string>
+    <string name="city_country_s">%s, %s</string>
+    <string name="paris_fr">Paris, FR</string>
+
+    <!--    API strings     -->
+    <string name="metric_unit">metric</string>
+    <string name="paris">Paris</string>
+
+    <!--    SnackBar messages   -->
+    <string name="net_error">Network error. Continue ?</string>
+    <string name="no_data_no_internet">No data and no internet.</string>
+
+    <!--    Days    -->
+    <string name="monday">MONDAY</string>
+    <string name="tuesday">TUESDAY</string>
+    <string name="wednesday">WEDNESDAY</string>
+    <string name="thursday">THURSDAY</string>
+    <string name="friday">FRIDAY</string>
+    <string name="saturday">SATURDAY</string>
+    <string name="sunday">SUNDAY</string>
+    <string name="error">ERROR</string>
+
+    <!--    Weather     -->
+    <string name="thunderstorm">Thunderstorm</string>
+    <string name="drizzle">Drizzle</string>
+    <string name="rain">Rain</string>
+    <string name="snow">Snow</string>
+    <string name="mist">Mist</string>
+    <string name="smoke">Smoke</string>
+    <string name="haze">Haze</string>
+    <string name="dust">Dust</string>
+    <string name="fog">Fog</string>
+    <string name="sand">Sand</string>
+    <string name="ash">Ash</string>
+    <string name="squall">Squall</string>
+    <string name="tornado">Tornado</string>
+    <string name="clear">Clear</string>
+    <string name="clouds">Clouds</string>
+    <string name="nc">NC</string>
+
+    <!--    AppBar     -->
+    <string name="search_city">Search city</string>
 </resources>

@@ -47,6 +47,7 @@ abstract class WeatherForecastDatabase : RoomDatabase() {
                 WeatherForecastDatabase::class.java,
                 DB_NAME
             )
+                .createFromAsset("citiesListDatas.db")
                 .addMigrations(nToNPlusOneMigration)
                 .build()
 

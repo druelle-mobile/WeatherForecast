@@ -11,6 +11,7 @@
     <color name="black">#000</color>
     <color name="blue">#0000FF</color>
     <color name="red">#FF0000</color>
-    <color name="smokeGrey">#f2f2f2</color>
+    <color name="smokeGray">#f2f2f2</color>
+    <color name="bluedGray">#B4B4FA</color>
     <color name="translucent">#ff000000</color>
 </resources>

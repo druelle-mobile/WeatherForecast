@@ -25,10 +25,6 @@ import ovh.geoffrey_druelle.weatherforecast.utils.extension.obs
 
 class SplashScreenFragment : BaseFragment<SplashScreenFragmentBinding>() {
 
-    companion object {
-        fun newInstance() = SplashScreenFragment()
-    }
-
     private lateinit var viewModel: SplashScreenViewModel
 
     private var exit: Boolean = false
@@ -88,7 +84,7 @@ class SplashScreenFragment : BaseFragment<SplashScreenFragmentBinding>() {
 
     private fun showNoConnectionSnackBar() {
         view?.let {
-            Snackbar.make(it, "Network error. Continue ?", Snackbar.LENGTH_SHORT)
+            Snackbar.make(it, getString(R.string.net_error), Snackbar.LENGTH_SHORT)
                 .setAction(getString(R.string.yes)) { navigateToHome() }
                 .setAction(getString(R.string.quit)) {
                     exit = true
@@ -100,7 +96,7 @@ class SplashScreenFragment : BaseFragment<SplashScreenFragmentBinding>() {
 
     private fun showNoDataNoConnectionSnackbar() {
         view?.let {
-            Snackbar.make(it, "No data and no internet.", Snackbar.LENGTH_INDEFINITE)
+            Snackbar.make(it, getString(R.string.no_data_no_internet), Snackbar.LENGTH_INDEFINITE)
                 .setAction(getString(R.string.quit)) {
                     exit = true
                     quitApp()

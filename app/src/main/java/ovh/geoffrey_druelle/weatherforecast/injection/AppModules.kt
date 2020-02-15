@@ -10,12 +10,14 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import ovh.geoffrey_druelle.weatherforecast.BuildConfig.OPEN_WEATHER_API_KEY
 import ovh.geoffrey_druelle.weatherforecast.data.local.database.WeatherForecastDatabase
-import ovh.geoffrey_druelle.weatherforecast.data.remote.api.CitiesListApi
 import ovh.geoffrey_druelle.weatherforecast.data.remote.api.OpenWeatherMapApi
 import ovh.geoffrey_druelle.weatherforecast.ui.forecast.ForecastListViewModel
 import ovh.geoffrey_druelle.weatherforecast.ui.main.MainActivityViewModel
 import ovh.geoffrey_druelle.weatherforecast.ui.splash.SplashScreenViewModel
-import ovh.geoffrey_druelle.weatherforecast.utils.*
+import ovh.geoffrey_druelle.weatherforecast.utils.BASE_URL
+import ovh.geoffrey_druelle.weatherforecast.utils.CONNECT_TIMEOUT
+import ovh.geoffrey_druelle.weatherforecast.utils.READ_TIMEOUT
+import ovh.geoffrey_druelle.weatherforecast.utils.WRITE_TIMEOUT
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
@@ -32,13 +34,10 @@ val appModules = module {
     single(named("owm_okhttp")) { provideOpenWeatherMapOkHttpClient(get()) }
     single(named("owm_retrofit")) { provideOpenWeatherMapRetrofitClient(get(named("owm_okhttp"))) }
     single(named("owm_api")) { provideOpenWeatherMapApiService(get(named("owm_retrofit"))) }
-    single(named("cities_okhttp")) { provideCitiesOkHttpClient() }
-    single(named("cities_retrofit")) { provideCitiesRetrofitClient(get(named("cities_okhttp"))) }
-    single(named("cities_api")) { provideCitiesApiService(get(named("cities_retrofit"))) }
 
     // ViewModels modules part
     viewModel { MainActivityViewModel() }
-    viewModel { SplashScreenViewModel(owmApi = get(named("owm_api")), cityApi = get(named("cities_api"))) }
+    viewModel { SplashScreenViewModel(owmApi = get(named("owm_api"))) }
     viewModel { ForecastListViewModel(api = get(named("owm_api"))) }
 
     // Provider module part
@@ -88,36 +87,3 @@ fun provideOpenWeatherMapRetrofitClient(client: OkHttpClient): Retrofit {
 
 fun provideOpenWeatherMapApiService(retrofit: Retrofit): OpenWeatherMapApi =
     retrofit.create(OpenWeatherMapApi::class.java)
-
-
-fun provideCitiesOkHttpClient(): OkHttpClient {
-    return OkHttpClient.Builder().apply {
-        connectTimeout(CONNECT_TIMEOUT, TimeUnit.SECONDS)
-        writeTimeout(WRITE_TIMEOUT, TimeUnit.SECONDS)
-        readTimeout(READ_TIMEOUT, TimeUnit.SECONDS)
-        retryOnConnectionFailure(true)
-        addInterceptor(openCitiesInterceptor())
-    }.build()
-}
-
-fun openCitiesInterceptor() = Interceptor { chain ->
-    chain.proceed(
-        chain.request().newBuilder()
-            .apply {
-                header("Accept", "application/json")
-                header("Content-Type", "application/json; charset=utf-8")
-            }
-            .build()
-    )
-}
-
-fun provideCitiesRetrofitClient(client: OkHttpClient): Retrofit {
-    return Retrofit.Builder()
-        .baseUrl(CITIES_URL)
-        .client(client)
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
-}
-
-fun provideCitiesApiService(retrofit: Retrofit): CitiesListApi =
-    retrofit.create(CitiesListApi::class.java)

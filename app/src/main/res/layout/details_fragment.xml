@@ -7,7 +7,7 @@
     android:layout_margin="@dimen/_8sdp"
     app:cardCornerRadius="4dp"
     tools:context="ovh.geoffrey_druelle.weatherforecast.ui.detail.DetailsFragment"
-    android:background="@color/smokeGrey">
+    android:background="@color/smokeGray">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -44,7 +44,8 @@
             app:layout_constraintRight_toLeftOf="@id/gl_fifty_vert"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/hot_or_cold"
-            tools:src="@drawable/few_clouds_day" />
+            tools:src="@drawable/few_clouds_day"
+            android:contentDescription="@string/weather_icon_desc" />
 
         <TextView
             android:id="@+id/weather_desc"

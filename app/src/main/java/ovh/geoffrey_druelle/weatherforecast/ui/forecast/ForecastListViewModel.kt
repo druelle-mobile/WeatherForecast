@@ -5,13 +5,15 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.runBlocking
+import ovh.geoffrey_druelle.weatherforecast.R
+import ovh.geoffrey_druelle.weatherforecast.WeatherForecastApplication.Companion.appContext
 import ovh.geoffrey_druelle.weatherforecast.WeatherForecastApplication.Companion.cityIdPref
 import ovh.geoffrey_druelle.weatherforecast.WeatherForecastApplication.Companion.instance
 import ovh.geoffrey_druelle.weatherforecast.core.BaseViewModel
 import ovh.geoffrey_druelle.weatherforecast.data.local.model.CityEntity
 import ovh.geoffrey_druelle.weatherforecast.data.local.model.ForecastEntity
 import ovh.geoffrey_druelle.weatherforecast.data.remote.api.OpenWeatherMapApi
-import ovh.geoffrey_druelle.weatherforecast.data.remote.model.openweathermap.Forecast
+import ovh.geoffrey_druelle.weatherforecast.data.remote.model.Forecast
 import ovh.geoffrey_druelle.weatherforecast.data.repository.CityRepository
 import ovh.geoffrey_druelle.weatherforecast.data.repository.ForecastRepository
 import ovh.geoffrey_druelle.weatherforecast.utils.cleanForecastDatabase
@@ -66,24 +68,12 @@ class ForecastListViewModel(private val api: OpenWeatherMapApi) : BaseViewModel(
         }
     }
 
-    private fun requestNewForecastDatas(cityId: Long) {
-        val call: Call<Forecast> = api.getDatasFromCityId(cityId, "metric")
+    fun requestNewForecastDatas(cityId: Long) {
+        val call: Call<Forecast> = api.getDatasFromCityId(cityId, appContext.getString(R.string.metric_unit))
         Timber.i("Call : %s", call.toString())
         call.enqueue(object : Callback<Forecast> {
             override fun onFailure(call: Call<Forecast>, t: Throwable) {
                 Timber.d(String.format("launchRequestForForecastDatas : Failure on call - %s", t))
-                Timber.d(
-                    String.format(
-                        "launchRequestForForecastDatas : Failure on call - %s",
-                        t.stackTrace
-                    )
-                )
-                Timber.d(
-                    String.format(
-                        "launchRequestForForecastDatas : Failure on call - %s",
-                        t.cause
-                    )
-                )
                 Timber.d(
                     String.format(
                         "launchRequestForForecastDatas : Failure on call - %s",

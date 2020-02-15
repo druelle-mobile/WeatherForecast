@@ -44,7 +44,8 @@
             app:layout_constraintRight_toLeftOf="@id/gl_fifty_vert"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/hot_or_cold"
-            tools:src="@drawable/few_clouds_day" />
+            tools:src="@drawable/few_clouds_day"
+            android:contentDescription="@string/weather_icon_desc" />
 
         <TextView
             android:id="@+id/weather_desc"

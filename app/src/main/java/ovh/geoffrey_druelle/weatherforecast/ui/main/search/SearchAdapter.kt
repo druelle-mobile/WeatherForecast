@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter
 import android.widget.TextView
 import kotlinx.coroutines.runBlocking
 import ovh.geoffrey_druelle.weatherforecast.R
+import ovh.geoffrey_druelle.weatherforecast.WeatherForecastApplication.Companion.appContext
 import ovh.geoffrey_druelle.weatherforecast.WeatherForecastApplication.Companion.instance
 import ovh.geoffrey_druelle.weatherforecast.data.local.model.CitiesListItemEntity
 import ovh.geoffrey_druelle.weatherforecast.data.repository.CitiesListItemRepository
@@ -36,7 +37,7 @@ class SearchAdapter(
         view = convertView ?: layoutInflater.inflate(layout, null)
         val citiesListItem = getItem(position)
         val itemName = view.findViewById<TextView>(R.id.search_item)
-        itemName.text = String.format("%s, %s", citiesListItem?.name, citiesListItem?.country)
+        itemName.text = String.format(appContext.getString(R.string.city_country_s), citiesListItem?.name, citiesListItem?.country)
 
         return view
     }
@@ -56,9 +57,9 @@ class SearchAdapter(
         val citiesListItem = getItem(position)
 
         return if (citiesListItem != null) String.format(
-            "%s, %s",
+            appContext.getString(R.string.city_country_s),
             citiesListItem.name,
             citiesListItem.country
-        ) else "Paris, FR"
+        ) else context.getString(R.string.paris_fr)
     }
 }

@@ -19,17 +19,6 @@ import timber.log.Timber
 
 class ForecastListFragment : BaseFragment<ForecastListFragmentBinding>() {
 
-    companion object {
-//        fun setCityIdAsSharedPreference(cityId: Long) {
-////            Toast.makeText(appContext, "LOL", Toast.LENGTH_SHORT).show()
-//
-//
-//
-//            val cityIdPref : SharedPreferences()
-//            cityIdPref.edit(
-//        }
-    }
-
     @LayoutRes
     override fun getLayoutResId(): Int = R.layout.forecast_list_fragment
 
@@ -77,7 +66,7 @@ class ForecastListFragment : BaseFragment<ForecastListFragmentBinding>() {
         viewModel.initCityLiveData()
         viewModel.city?.obs(this) {
             val title =
-                String.format("%s, %s", viewModel.city?.value?.name, viewModel.city?.value?.country)
+                String.format(getString(R.string.city_country_s), viewModel.city?.value?.name, viewModel.city?.value?.country)
             (activity as MainActivity).viewModel.appBarTitle.set(title)
         }
     }

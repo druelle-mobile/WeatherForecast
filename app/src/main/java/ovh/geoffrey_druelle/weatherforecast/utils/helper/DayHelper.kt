@@ -2,19 +2,20 @@ package ovh.geoffrey_druelle.weatherforecast.utils.helper
 
 import android.graphics.Color
 import ovh.geoffrey_druelle.weatherforecast.R
+import ovh.geoffrey_druelle.weatherforecast.WeatherForecastApplication.Companion.appContext
 import java.text.SimpleDateFormat
 import java.util.*
 
 fun getDay(dt: Long): String {
     return when (getDayOfWeek(dt)) {
-        Calendar.MONDAY -> "MONDAY"
-        Calendar.TUESDAY -> "TUESDAY"
-        Calendar.WEDNESDAY -> "WEDNESDAY"
-        Calendar.THURSDAY -> "THURSDAY"
-        Calendar.FRIDAY -> "FRIDAY"
-        Calendar.SATURDAY -> "SATURDAY"
-        Calendar.SUNDAY -> "SUNDAY"
-        else -> "ERROR"
+        Calendar.MONDAY -> appContext.getString(R.string.monday)
+        Calendar.TUESDAY -> appContext.getString(R.string.tuesday)
+        Calendar.WEDNESDAY -> appContext.getString(R.string.wednesday)
+        Calendar.THURSDAY -> appContext.getString(R.string.thursday)
+        Calendar.FRIDAY -> appContext.getString(R.string.friday)
+        Calendar.SATURDAY -> appContext.getString(R.string.saturday)
+        Calendar.SUNDAY -> appContext.getString(R.string.sunday)
+        else -> appContext.getString(R.string.error)
     }
 }
 

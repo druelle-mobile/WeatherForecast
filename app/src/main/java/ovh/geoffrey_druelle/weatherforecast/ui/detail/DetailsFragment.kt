@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentTransaction
-import androidx.lifecycle.LiveData
 import kotlinx.android.synthetic.main.details_fragment.view.*
 import kotlinx.coroutines.runBlocking
 import ovh.geoffrey_druelle.weatherforecast.R
@@ -28,7 +27,6 @@ class DetailsFragment : DialogFragment() {
 
     private lateinit var forecast: ForecastEntity
     private lateinit var customView: View
-    private var forecastRepository = ForecastRepository(WeatherForecastApplication.instance)
     private var cityRepository = CityRepository(WeatherForecastApplication.instance)
 
     companion object {
@@ -67,27 +65,27 @@ class DetailsFragment : DialogFragment() {
 
         view.weather_icon.setImageResource(getIcon(forecast.weatherId, forecast.weatherIcon))
         view.weather_desc.text = getMainDescription(forecast.weatherId)
-        view.temperature.text = String.format("%.2f °C", forecast.temp)
-        view.feel_temperature.text = String.format("Felt : %.2f °C", forecast.feelsLike)
-        view.max_temmperature.text = String.format("Max : %.2f °C", forecast.tempMax)
-        view.min_temmperature.text = String.format("Min : %.2f °C", forecast.tempMin)
+        view.temperature.text = String.format(getString(R.string.temp_s), forecast.temp)
+        view.feel_temperature.text = String.format(getString(R.string.felt_temp_s), forecast.feelsLike)
+        view.max_temmperature.text = String.format(getString(R.string.max_temp_s), forecast.tempMax)
+        view.min_temmperature.text = String.format(getString(R.string.min_temp_s), forecast.tempMin)
         if (forecast.temp >= 15.0) {
-            view.hot_or_cold.text = "Hot"
+            view.hot_or_cold.text = getString(R.string.hot)
             view.hot_or_cold.setTextColor(Color.RED)
         }
         else {
-            view.hot_or_cold.text = "Cold"
+            view.hot_or_cold.text = getString(R.string.cold)
             view.hot_or_cold.setTextColor(Color.CYAN)
         }
-        view.wind_speed.text = String.format("Wind : %.2f km/h", forecast.speedWind)
+        view.wind_speed.text = String.format(getString(R.string.wind_s), forecast.speedWind)
         view.rain_three_hours.text =
-            String.format("Rain : %.2f mm", forecast.volumeRainLastThreeHours)
+            String.format(getString(R.string.rain_s), forecast.volumeRainLastThreeHours)
         view.snow_three_hours.text =
-            String.format("Rain : %.2f mm", forecast.volumeSnowLastThreeHours)
+            String.format(getString(R.string.snow_s), forecast.volumeSnowLastThreeHours)
 
         val city: CityEntity = runBlocking { cityRepository.getCity(forecast.cityId) }
-        view.sunrise.text = String.format("Sunrise : %s", getDayAndHours(city.sunrise))
-        view.sunset.text = String.format("Sunset : %s", getDayAndHours(city.sunset))
+        view.sunrise.text = String.format(getString(R.string.sunrise_s), getDayAndHours(city.sunrise))
+        view.sunset.text = String.format(getString(R.string.sunset_s), getDayAndHours(city.sunset))
 
 
         val builder = AlertDialog.Builder(context!!)
@@ -105,7 +103,7 @@ class DetailsFragment : DialogFragment() {
         val city = runBlocking { cityRepository.getCity(forecast.cityId) }
         val cityName = city.name
         val cityCountry = city.country
-        return String.format("%s - %s, %s", dayOfWeak, cityName, cityCountry)
+        return String.format(getString(R.string.day_city_country_s), dayOfWeak, cityName, cityCountry)
     }
 
     override fun onStart() {

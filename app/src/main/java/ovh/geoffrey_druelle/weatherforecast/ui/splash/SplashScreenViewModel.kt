@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonArray
 import kotlinx.coroutines.*
+import ovh.geoffrey_druelle.weatherforecast.R
 import ovh.geoffrey_druelle.weatherforecast.WeatherForecastApplication.Companion.appContext
 import ovh.geoffrey_druelle.weatherforecast.WeatherForecastApplication.Companion.instance
 import ovh.geoffrey_druelle.weatherforecast.core.BaseViewModel
@@ -47,10 +48,6 @@ class SplashScreenViewModel(
     private val _noDataNoConnection = MutableLiveData<Boolean>()
     val noDataNoConnection: LiveData<Boolean>
         get() = _noDataNoConnection
-
-    private val _isConnectionNeeded = MutableLiveData<Boolean>()
-    val isConnectionNeeded: LiveData<Boolean>
-        get() = _isConnectionNeeded
 
     private val _navToHome = MutableLiveData<Boolean>()
     val navToHome: LiveData<Boolean>
@@ -113,18 +110,6 @@ class SplashScreenViewModel(
                 Timber.d(
                     String.format(
                         "launchRequestForCitiesList : Failure on call - %s",
-                        t.stackTrace
-                    )
-                )
-                Timber.d(
-                    String.format(
-                        "launchRequestForCitiesList : Failure on call - %s",
-                        t.cause
-                    )
-                )
-                Timber.d(
-                    String.format(
-                        "launchRequestForCitiesList : Failure on call - %s",
                         t.message
                     )
                 )
@@ -170,23 +155,11 @@ class SplashScreenViewModel(
     }
 
     private fun launchRequestForForecastDatas() {
-        val call: Call<Forecast> = owmApi.getDatasFromCityName("Paris", "metric")
+        val call: Call<Forecast> = owmApi.getDatasFromCityName(appContext.getString(R.string.paris), appContext.getString(R.string.metric_unit))
         Timber.i("Call : %s", call.toString())
         call.enqueue(object : Callback<Forecast> {
             override fun onFailure(call: Call<Forecast>, t: Throwable) {
                 Timber.d(String.format("launchRequestForForecastDatas : Failure on call - %s", t))
-                Timber.d(
-                    String.format(
-                        "launchRequestForForecastDatas : Failure on call - %s",
-                        t.stackTrace
-                    )
-                )
-                Timber.d(
-                    String.format(
-                        "launchRequestForForecastDatas : Failure on call - %s",
-                        t.cause
-                    )
-                )
                 Timber.d(
                     String.format(
                         "launchRequestForForecastDatas : Failure on call - %s",

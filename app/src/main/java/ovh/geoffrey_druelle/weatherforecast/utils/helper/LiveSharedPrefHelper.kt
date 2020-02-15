@@ -10,12 +10,12 @@ import androidx.lifecycle.LiveData
 
 abstract class LiveSharedPrefHelper<T>(
     val sharedPrefs: SharedPreferences,
-    val key: String,
-    val defValue: T
+    private val key: String,
+    private val defValue: T
 ) : LiveData<T>() {
 
     private val preferenceChangeListener =
-        SharedPreferences.OnSharedPreferenceChangeListener { sharedPreferences, key ->
+        SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
             if (key == this.key) {
                 value = getValueFromPreferences(key, defValue)
             }

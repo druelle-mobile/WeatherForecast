@@ -5,6 +5,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.runBlocking
+import ovh.geoffrey_druelle.weatherforecast.R
+import ovh.geoffrey_druelle.weatherforecast.WeatherForecastApplication.Companion.appContext
 import ovh.geoffrey_druelle.weatherforecast.WeatherForecastApplication.Companion.cityIdPref
 import ovh.geoffrey_druelle.weatherforecast.WeatherForecastApplication.Companion.instance
 import ovh.geoffrey_druelle.weatherforecast.core.BaseViewModel
@@ -67,23 +69,11 @@ class ForecastListViewModel(private val api: OpenWeatherMapApi) : BaseViewModel(
     }
 
     private fun requestNewForecastDatas(cityId: Long) {
-        val call: Call<Forecast> = api.getDatasFromCityId(cityId, "metric")
+        val call: Call<Forecast> = api.getDatasFromCityId(cityId, appContext.getString(R.string.metric_unit))
         Timber.i("Call : %s", call.toString())
         call.enqueue(object : Callback<Forecast> {
             override fun onFailure(call: Call<Forecast>, t: Throwable) {
                 Timber.d(String.format("launchRequestForForecastDatas : Failure on call - %s", t))
-                Timber.d(
-                    String.format(
-                        "launchRequestForForecastDatas : Failure on call - %s",
-                        t.stackTrace
-                    )
-                )
-                Timber.d(
-                    String.format(
-                        "launchRequestForForecastDatas : Failure on call - %s",
-                        t.cause
-                    )
-                )
                 Timber.d(
                     String.format(
                         "launchRequestForForecastDatas : Failure on call - %s",

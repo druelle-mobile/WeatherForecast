@@ -13,7 +13,7 @@ import ovh.geoffrey_druelle.weatherforecast.core.BaseViewModel
 import ovh.geoffrey_druelle.weatherforecast.data.local.model.CityEntity
 import ovh.geoffrey_druelle.weatherforecast.data.local.model.ForecastEntity
 import ovh.geoffrey_druelle.weatherforecast.data.remote.api.OpenWeatherMapApi
-import ovh.geoffrey_druelle.weatherforecast.data.remote.model.openweathermap.Forecast
+import ovh.geoffrey_druelle.weatherforecast.data.remote.model.Forecast
 import ovh.geoffrey_druelle.weatherforecast.data.repository.CityRepository
 import ovh.geoffrey_druelle.weatherforecast.data.repository.ForecastRepository
 import ovh.geoffrey_druelle.weatherforecast.utils.cleanForecastDatabase

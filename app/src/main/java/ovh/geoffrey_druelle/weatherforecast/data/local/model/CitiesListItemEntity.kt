@@ -10,12 +10,4 @@ class CitiesListItemEntity(
     var id: Long,
     var name: String,
     var country: String
-) {
-
-    @Ignore
-    constructor() : this(
-        id = 0,
-        name = "",
-        country = ""
-    )
-}
+)

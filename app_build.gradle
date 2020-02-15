@@ -12,7 +12,7 @@ def version_code = Integer.parseInt(new Date().format('yyMMddHHmm'))
 // It depends of what you update
 def major_version = 1
 def minor_version = 0
-def patch_version = 0
+def patch_version = 1
 def version_name = "${major_version}.${minor_version}.${patch_version}"
 
 // Define the sdk build versions and the build tools

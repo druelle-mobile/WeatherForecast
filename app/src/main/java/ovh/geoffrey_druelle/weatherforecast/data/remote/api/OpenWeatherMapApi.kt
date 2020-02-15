@@ -1,6 +1,6 @@
 package ovh.geoffrey_druelle.weatherforecast.data.remote.api
 
-import ovh.geoffrey_druelle.weatherforecast.data.remote.model.openweathermap.Forecast
+import ovh.geoffrey_druelle.weatherforecast.data.remote.model.Forecast
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query

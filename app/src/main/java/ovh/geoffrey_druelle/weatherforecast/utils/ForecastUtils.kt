@@ -2,12 +2,10 @@ package ovh.geoffrey_druelle.weatherforecast.utils
 
 import kotlinx.coroutines.runBlocking
 import ovh.geoffrey_druelle.weatherforecast.WeatherForecastApplication
-import ovh.geoffrey_druelle.weatherforecast.data.local.model.CitiesListItemEntity
 import ovh.geoffrey_druelle.weatherforecast.data.local.model.CityEntity
 import ovh.geoffrey_druelle.weatherforecast.data.local.model.ForecastEntity
-import ovh.geoffrey_druelle.weatherforecast.data.remote.model.cities.CitiesListItem
-import ovh.geoffrey_druelle.weatherforecast.data.remote.model.openweathermap.Forecast
-import ovh.geoffrey_druelle.weatherforecast.data.remote.model.openweathermap.ListItem
+import ovh.geoffrey_druelle.weatherforecast.data.remote.model.Forecast
+import ovh.geoffrey_druelle.weatherforecast.data.remote.model.ListItem
 import ovh.geoffrey_druelle.weatherforecast.data.repository.CityRepository
 import ovh.geoffrey_druelle.weatherforecast.data.repository.ForecastRepository
 
@@ -28,14 +26,6 @@ fun populateForecastDatabase(forecast: Forecast) {
             forecastRepository.insert(createForecastObject(forecast.city.id, forecast.list[i]))
         }
     }
-}
-
-fun createCitiesListObject(item: CitiesListItem): CitiesListItemEntity {
-    val citiesListItem = CitiesListItemEntity()
-    citiesListItem.id = item.id
-    citiesListItem.name = item.name
-    citiesListItem.country = item.country
-    return citiesListItem
 }
 
 fun createCityObject(forecast: Forecast): CityEntity {

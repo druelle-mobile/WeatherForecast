@@ -7,7 +7,7 @@
     android:layout_margin="@dimen/_8sdp"
     app:cardCornerRadius="4dp"
     tools:context="ovh.geoffrey_druelle.weatherforecast.ui.detail.DetailsFragment"
-    android:background="@color/smokeGrey">
+    android:background="@color/smokeGray">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

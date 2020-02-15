@@ -9,9 +9,11 @@ import ovh.geoffrey_druelle.weatherforecast.R
 //open class WeatherHelper {
 
 
+
 fun getIcon(id: Int, icon: String): Int {
     var isDay = false
-    if (icon.contains("d")) isDay == true
+
+    if (icon.contains("d")) isDay = true
 
     return when (id) {
         in 200..232 -> {

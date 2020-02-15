@@ -1,6 +1,7 @@
 package ovh.geoffrey_druelle.weatherforecast.utils.helper
 
 import android.graphics.Color
+import ovh.geoffrey_druelle.weatherforecast.R
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -17,16 +18,20 @@ fun getDay(dt: Long): String {
     }
 }
 
+fun getHour(dt_txt: String): String {
+    return dt_txt.subSequence(dt_txt.length - 8, dt_txt.length - 3).toString()
+}
+
 fun attributeColorToDay(dt: Long): Int {
     return when (getDayOfWeek(dt)) {
-        Calendar.MONDAY -> Color.parseColor("#28E0AE")
-        Calendar.TUESDAY -> Color.parseColor("#FF0090")
-        Calendar.WEDNESDAY -> Color.parseColor("#FFAE00")
-        Calendar.THURSDAY -> Color.parseColor("#0090FF")
-        Calendar.FRIDAY -> Color.parseColor("#DC0000")
-        Calendar.SATURDAY -> Color.parseColor("#0051FF")
-        Calendar.SUNDAY -> Color.parseColor("#3D28E0")
-        else -> Color.parseColor("#28E0AE")
+        Calendar.MONDAY -> Color.parseColor("#B24C63")
+        Calendar.TUESDAY -> Color.parseColor("#357DED")
+        Calendar.WEDNESDAY -> Color.parseColor("#56EEF4")
+        Calendar.THURSDAY -> Color.parseColor("#4A1942")
+        Calendar.FRIDAY -> Color.parseColor("#119DA4")
+        Calendar.SATURDAY -> Color.parseColor("#3066BE")
+        Calendar.SUNDAY -> Color.parseColor("#B388EB")
+        else -> Color.GRAY
     }
 }
 

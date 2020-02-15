@@ -14,10 +14,7 @@ import ovh.geoffrey_druelle.weatherforecast.databinding.ForecastListItemBinding
 import ovh.geoffrey_druelle.weatherforecast.ui.detail.DetailsFragment
 import ovh.geoffrey_druelle.weatherforecast.ui.forecast.ForecastListViewModel
 import ovh.geoffrey_druelle.weatherforecast.ui.main.MainActivity
-import ovh.geoffrey_druelle.weatherforecast.utils.helper.attributeColorToDay
-import ovh.geoffrey_druelle.weatherforecast.utils.helper.getDay
-import ovh.geoffrey_druelle.weatherforecast.utils.helper.getIcon
-import ovh.geoffrey_druelle.weatherforecast.utils.helper.getMainDescription
+import ovh.geoffrey_druelle.weatherforecast.utils.helper.*
 import kotlin.coroutines.CoroutineContext
 
 
@@ -52,8 +49,8 @@ class ForecastListAdapter(
         holder.binding.weatherDesc.text = getMainDescription(forecast.weatherId)
 
         holder.binding.day.text = getDay(forecast.dt)
+        holder.binding.hour.text = getHour(forecast.dt_txt)
         holder.binding.forecastCard.setBackgroundColor(attributeColorToDay(forecast.dt))
-
         holder.binding.temperature.text = String.format("%s °C", forecast.temp)
 
         holder.binding.forecastCard.setOnClickListener {
